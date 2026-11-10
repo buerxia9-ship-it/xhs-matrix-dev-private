@@ -1,0 +1,14 @@
+{
+  "name": "xhs-matrix-cloud-code-baseline",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Code-only baseline; synthetic offline tests; no production data",
+  "engines": {
+    "node": "24.22.1"
+  },
+  "scripts": {
+    "test": "node --test tests/foundation.test.cjs",
+    "cloud:fixture": "python3 cloud/create-fixture.py",
+    "cloud:start": "node cloud/start.cjs"
+  }
+}

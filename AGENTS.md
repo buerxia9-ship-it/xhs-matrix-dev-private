@@ -1,0 +1,13 @@
+# XHS matrix cloud code baseline
+- Continue the existing Vue/NestJS/Prisma workbench; do not rebuild it or confuse it with the retired Python 8601 workbench or the Phase 2 Agent experiment.
+- Read docs/product/CONTEXT.md and CURRENT_STATE.md before changing code.
+- Production personas, product facts, media, memories and feedback remain authoritative in the local business database. They are not included here.
+- Use synthetic fixtures only. Never request or reconstruct production keys, databases, cookies, browser profiles or customer records.
+- Do not call paid AI services, log into social accounts, publish, comment, send messages, enable schedules or change OS startup settings.
+- Keep LICENSE and dependency locks. Do not silently upgrade dependencies, replace model names or remove runtime patches.
+- backend-ts/src and frontend/src are not the whole running implementation: runtime-patches must remain reviewable.
+- Only cloud/preflight.cjs-approved .cloud-data paths are writable for test data. App preview uses port 4181 and loopback only.
+- Cloud preview has network and mutation guards; these are application defenses, not a claim of OS sandbox security.
+- Run npm test for the offline foundation suite. After explicitly authorized dependency installation, run cloud/setup.sh and review actual build/test output.
+- Report true test failures and unverified behavior. Do not turn a skipped cloud build into a success.
+- No remote creation, push, deployment or subsequent phase without explicit user authorization.
