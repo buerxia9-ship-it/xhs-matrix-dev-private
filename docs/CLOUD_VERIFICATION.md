@@ -9,3 +9,15 @@
 
 No GitHub Actions workflow is enabled in this baseline. No automatic cloud publishing, remote deployment or second Agent executor is created.
 If the UI presents a legacy environment workflow, follow the corresponding current official guide rather than assuming it matches the new reusable environment flow.
+
+Repeatable setup: run `bash cloud/setup.sh` with Node 24.22.1. The script pins
+npm's official registry/host replacement and places npm, node-gyp and Prisma
+caches under the current checkout's preflight-checked `.cloud-data/cache`.
+Before dependency installation, `cloud/ensure-fixture.py` creates a missing
+fixture or validates an existing one read-only. Reuse requires the approved
+schema, manifest, complete seed content (excluding creation/update timestamps),
+integrity and foreign keys, with zero accounts/providers and no SQLite sidecars.
+Unknown or edited databases are refused unchanged; the creator still refuses
+overwrites. Stop the preview before setup. Seed changes require review of the
+validator's expected digest. No production-equivalence or empty-cache network
+success is implied by an offline test pass.
