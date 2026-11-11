@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "experiment_id": "AUTO-CONTINUE-003",
+  "automation_id": null,
+  "repository": "buerxia9-ship-it/xhs-matrix-dev-private",
+  "report_branch": "reports/ceo-status",
+  "pr_number": 2,
+  "approved_main_sha": "ab382ba0a4ecb4c8ef0c2cda7360f884d74b25d0",
+  "expected_pr_head": "df84de4ba4fb1ca6d744b786eaf8510e6e021e06",
+  "stage": "verify_previous_delivery",
+  "check_count": 0,
+  "max_checks": 6,
+  "dispatch_count": 0,
+  "max_dispatches": 2,
+  "next_task_id": "OPS-CONTEXT-AUDIT-003",
+  "request_comment_id": null,
+  "receipt_comment_id": null,
+  "clarification_comment_id": null,
+  "processed_receipt_ids": [],
+  "known_execution_deviation": "HANDOFF-PATCH-002 reported a local commit and make_pr despite being instructed not to. Native push and permission compliance are not accepted; subsequent Codex work is read-only.",
+  "allowed_github_writes": [
+    "reports/ceo-status:AUTO_HANDOFF_STATE.json",
+    "reports/ceo-status:AUTO_HANDOFF_REVIEW.md",
+    "reports/ceo-status:OPS_CONTEXT_AUDIT.md",
+    "reports/ceo-status:CEO_STATUS.md",
+    "PR #2: at most one read-only audit request and one evidence clarification, each with a unique task ID"
+  ],
+  "forbidden": ["main or application-code writes", "test-branch writes", "merge", "deployment", "production data", "long-lived credentials", "independent paid model or business APIs", "unbounded retries", "resuming the paused hourly report or old review experiment"],
+  "notification_policy": "Only verified milestones, blocking failures, or required user decisions. No hourly no-change reports.",
+  "continuation_policy": "Verify the delivered documentation patch; automatically dispatch one real read-only content-chain audit; independently validate the receipt; request evidence once if necessary; persist findings and a scoped implementation proposal. Stop before business-code implementation or upon boundary violations.",
+  "stop_reason": null,
+  "last_verified_at": null
+}
