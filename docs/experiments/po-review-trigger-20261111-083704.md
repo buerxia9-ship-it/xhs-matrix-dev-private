@@ -10,3 +10,4 @@ This experiment changes no application code, dependencies, workflows, or data.
 It contains no business, customer, account, or credential information.
 Do not merge or deploy this pull request as part of the experiment.
 GPT-to-Codex handoff smoke test: documentation-only change requested via PR comment.
+Codex patch handoff: HANDOFF-PATCH-002.
