@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "experiment_id": "AUTO-CONTINUE-003",
-  "automation_id": null,
+  "automation_id": "Automation_69a635046eb48191a157b64be5026005",
   "repository": "buerxia9-ship-it/xhs-matrix-dev-private",
   "report_branch": "reports/ceo-status",
   "pr_number": 2,
