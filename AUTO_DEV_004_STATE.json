@@ -8,7 +8,7 @@
   "report_branch": "reports/ceo-status",
   "initial_main_sha": "ab382ba0a4ecb4c8ef0c2cda7360f884d74b25d0",
   "expected_pr_head": "ea70b5dabd55ef18f6aa6f85ee6355f2d21371b1",
-  "stage": "ci_all_green_end_to_end_review_pending",
+  "stage": "validation_manual_review_gate_repair_in_progress",
   "task_id": "AUTO-DEV-004-P0P1-IMPLEMENT",
   "check_count": 4,
   "max_checks": 12,
@@ -43,10 +43,10 @@
   "automation_enabled_observed": false,
   "automation_schedule": "HOURLY condition_watch, Asia/Tokyo",
   "workflow_note": "Same PR #4 has actual source delivery. Original automation remains paused; no automation mutation, new dispatch, merge, deployment or P2. Further work is engineering validation, not CEO source transfer.",
-  "last_verified_at": "2026-11-12T06:56:11.454Z",
+  "last_verified_at": "2026-11-12T07:44:19.605Z",
   "last_verified_pr_head": "3749dbe8905dee30985771455edff3d72035cc77",
   "last_verified_changed_files": 17,
-  "last_check_result": "CI run 43171080140 completed success: 3/3 jobs success, offline suite 27/27. No currently running CI. Full protected image composition and manual-approval end-to-end acceptance not yet independently established; 9/10 evidence gates.",
+  "last_check_result": "Interactive GPT review found PublishService.markPublished can mark draft published without review, images or awaiting_manual job; preparing bounded regression and code fix.",
   "patch_request_comment_id": 6814800851,
   "patch_request_task_id": "AUTO-DEV-004-P0P1-PATCH-DELIVERY",
   "codex_delivery_status": "original local commits absent here; parallel GPT replacement verified, desktop review repair delivered on same branch",
@@ -86,7 +86,7 @@
     "two existing Windows platform-dependent cloud setup tests"
   ],
   "desktop_review_repair_count": 1,
-  "current_activity": "GitHub Actions本轮3项任务已全部完成，没有进行中的CI；GPT/Codex是否执行需独立回执。下一项：确认离线合成图和人工审核端到端证据。",
+  "current_activity": "GPT 本次会话正在复核并修复 markPublished 人工审核绕过问题，仅开发 PR #4",
   "implementation_delivered": true,
   "review_ready": true,
   "acceptance_passed": false,
@@ -210,16 +210,16 @@
     "updated_at": "2026-11-12T06:56:11.454Z"
   },
   "validation_monitor": {
-    "enabled": true,
+    "enabled": false,
     "automation_id": "6af561185e7c819185ab3dc381abb29e",
     "checks": 0,
     "max_checks": 12,
     "repair_count": 0,
     "max_repairs": 2,
-    "run_id": 43170514893,
+    "run_id": 43171080140,
     "next_run_time": "2026-11-12T14:48:52+08:00",
     "frequency": "HOURLY;COUNT=12;condition_watch",
-    "last_verified_enabled": true
+    "last_verified_enabled": false
   },
   "monitoring_truth": {
     "github_ci_running": false,
@@ -229,5 +229,19 @@
     "codex_running_evidence": false,
     "automation_enabled_only_schedule": true,
     "note": "No active GPT/Codex runtime proof from GitHub. Monitor enabled does not equal execution in progress."
+  },
+  "worker_heartbeat": {
+    "gpt": {
+      "status": "running",
+      "source": "interactive_gpt_review",
+      "started_at": "2026-11-12T07:44:19.605Z",
+      "updated_at": "2026-11-12T07:44:19.605Z",
+      "expires_at": "2026-11-12T07:59:19.605Z",
+      "current_step": "核对发布收尾标记、创建有界补丁与离线回归",
+      "scope": "AUTO-DEV-004 PR #4"
+    },
+    "codex": {
+      "status": "not_verified_running"
+    }
   }
 }
