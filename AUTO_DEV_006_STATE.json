@@ -23,18 +23,18 @@
       "conclusion": "success"
     }
   },
-  "stage": "quality_review_prepared",
+  "stage": "synthetic_demo_ci_running",
   "work_mode": "review_only_no_code_dispatch",
-  "current_activity": "P3 验收用例已准备；有限自动任务曾启动但未产生 GitHub 源码/测试产物，随后自动暂停。不得宣称正在运行。",
-  "is_work_actively_running": false,
-  "last_verified_at": "2026-11-12T08:31:27.393Z",
+  "current_activity": "P3 9组模拟选题已在 GitHub Actions 真实运行，等待编译后输出候选与人设差异对照",
+  "is_work_actively_running": true,
+  "last_verified_at": "2026-11-12T08:40:23.182Z",
   "owner_action_required": false,
   "owner_action": "none for technical preparation; later reviewer may rate representative topics",
   "acceptance_passed": false,
   "progress": {
-    "completed": 1,
+    "completed": 2,
     "total": 5,
-    "percent": 20,
+    "percent": 40,
     "method": "P3 review milestones, not AI product completion",
     "gates": [
       {
@@ -45,12 +45,12 @@
       {
         "id": "cases",
         "label": "准备三个账号及多品类的用例和评分表",
-        "status": "prepared"
+        "status": "passed"
       },
       {
         "id": "run",
         "label": "隔离环境真实运行选题输出",
-        "status": "not_started"
+        "status": "running"
       },
       {
         "id": "evaluate",
@@ -81,7 +81,7 @@
       "issue": "选题已支持编辑和采纳，但没有用户评分与采纳理由的独立质量回流字段"
     }
   ],
-  "next_task": "本地/独立技术执行 P3 合成场景，用真实运行证据生成选题候选，再进入人设质量审核。当前自动化任务无法无介入保证执行，不能冒称后台推进。",
+  "next_task": "CI 真实输出9组候选后抽取标题/角度与来源，分类审核不同账号口吻是否雷同；本地工作台未经同步不可冒充已部署",
   "boundaries": "Only synthetic/user-approved non-sensitive evidence. No real XHS collection/DM, customer files, original packaging images, paid API, production DB, deployment or main merge; no new Codex dispatch under the exhausted 3/3 cap.",
   "automation_status": "not_scheduled",
   "history": [
@@ -92,6 +92,10 @@
     {
       "at": "2026-11-12T08:31:27.393Z",
       "event": "Observed P3 scheduled run completed with requires_user_action=true and is_enabled=false; no test output or PR delivered."
+    },
+    {
+      "at": "2026-11-12T08:40:23.182Z",
+      "event": "P3 test-only stacked Draft PR #6 opened and CI dispatched; nine synthetic cases, real compiled P2 service; no Codex dispatch"
     }
   ],
   "check_count": 0,
@@ -105,5 +109,17 @@
     "last_run_at": "2026-11-12T08:29:23.674053Z",
     "last_run_recorded_status": "completed",
     "run_result_requires_user_action": true
+  },
+  "code_demo": {
+    "pr": 6,
+    "head": "75c81a10f349517f207a64fe1e5b7665710f3ea3",
+    "base": "dev/auto-dev-005-evidence-topics",
+    "ci_run_id": 43184766177,
+    "ci_url": "https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43184766177",
+    "ci_status": "in_progress",
+    "ci_conclusion": null,
+    "synthetic_case_count": 9,
+    "real_production_data": false,
+    "deployed_local": false
   }
 }
