@@ -1,0 +1,37 @@
+name: AUTO-DEV-006 P3 Synthetic Topic Demonstration
+on:
+  push:
+    branches:
+      - dev/auto-dev-006-topic-quality-demo
+    paths:
+      - .github/workflows/auto-dev-006-demo.yml
+      - tests/p3-topic-quality-demo.test.cjs
+permissions:
+  contents: read
+concurrency:
+  group: auto-dev-006-topic-demo
+  cancel-in-progress: true
+jobs:
+  synthetic-topic-demonstration:
+    name: Run real P2 service with P3 synthetic personas
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      DATABASE_URL: file:./ci-synthetic.db
+      PATCHRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.22.1'
+      - name: Install locked backend dependencies
+        run: npm ci --prefix backend-ts --no-audit --no-fund
+      - name: Generate Prisma and compile NestJS source
+        run: npm --prefix backend-ts run prisma:generate && npm --prefix backend-ts run build
+      - name: Baseline source-linked topic regression
+        run: npm run test:p2
+      - name: P3 nine-case demo (see P3_DEMO_CASE in logs)
+        run: node --test tests/p3-topic-quality-demo.test.cjs
