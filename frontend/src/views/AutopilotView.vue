@@ -118,7 +118,16 @@
           <el-input-number v-model="acfg.draftsPerTopic" :min="1" :max="5" size="small" /> 篇
         </el-form-item>
 
-        <el-divider content-position="left">③ 发布节奏（仅「全自动」模式自动发布时生效）</el-divider>
+        <el-divider content-position="left">③ 配图设置</el-divider>
+        <el-form-item label="图片数量"><el-input-number v-model="acfg.imageCount" :min="1" :max="4" size="small" /> 张（按本次策划选择）</el-form-item>
+        <el-form-item label="配图来源">
+          <el-select v-model="acfg.imageSource" placeholder="必须选择配图来源" style="width:260px" clearable>
+            <el-option label="图库素材" value="library" />
+            <el-option label="AI 场景图（不适用于受保护包装）" value="ai" />
+            <el-option label="受保护混合（须登记原包装）" value="mix" />
+          </el-select>
+        </el-form-item>
+        <el-divider content-position="left">④ 发布节奏（仅「全自动」模式自动发布时生效）</el-divider>
         <el-form-item label="发布时段(拟人)">
           <el-switch v-model="acfg.windowOn" />
           <template v-if="acfg.windowOn">
@@ -256,7 +265,7 @@ const logsDrawer = ref(false)
 const mixDialog = ref(false)
 const mix = ref([])
 const autoCfgDialog = ref(false)
-const acfg = reactive({ minH: 23, minM: 50, maxH: 24, maxM: 30, adoptMin: 3, adoptMax: 5, draftsPerTopic: 1, collectCooldownH: 20, perRunMax: 0, pubGapMin: 3, pubGapMax: 15, windowOn: false, windowStart: 8, windowEnd: 23 })
+const acfg = reactive({ minH: 23, minM: 50, maxH: 24, maxM: 30, adoptMin: 3, adoptMax: 5, draftsPerTopic: 1, collectCooldownH: 20, perRunMax: 0, pubGapMin: 3, pubGapMax: 15, windowOn: false, windowStart: 8, windowEnd: 23, imageCount: 1, imageSource: '' })
 const DEFAULT_MIX = [
   { type: '干货', weight: 80, embedRate: 20 },
   { type: '种草', weight: 20, embedRate: 100 },
@@ -264,7 +273,7 @@ const DEFAULT_MIX = [
 let pollTimer = null
 
 function fmt(s) { return s ? new Date(s).toLocaleString('zh-CN') : '' }
-function stageText(s) { return { collect: '采集', synthesize: '知识沉淀', analysis: '分析', generate: '生成', publish: '发布', done: '完成', error: '错误' }[s] || s }
+function stageText(s) { return { collect: '采集', synthesize: '知识沉淀', analysis: '分析', generate: '文案', image: '配图', publish: '发布', done: '完成', error: '错误' }[s] || s }
 
 async function loadStatus() {
   if (!store.currentId) return
@@ -329,6 +338,8 @@ function openAutoCfg(c) {
     windowOn: !!cad.pubWindowOn,
     windowStart: cad.pubWindowStart ?? 8,
     windowEnd: cad.pubWindowEnd ?? 23,
+    imageCount: cad.imageCount ?? 1,
+    imageSource: cad.imageSource ?? '',
   })
   autoCfgDialog.value = true
 }
@@ -347,6 +358,8 @@ async function saveAutoCfg() {
     pubWindowOn: acfg.windowOn,
     pubWindowStart: acfg.windowStart,
     pubWindowEnd: Math.max(acfg.windowEnd, acfg.windowStart + 1),
+    imageCount: Math.min(4, Math.max(1, Number(acfg.imageCount) || 1)),
+    imageSource: acfg.imageSource || null,
   }
   await apiService.campaigns.update(store.currentId, { cadence })
   await store.refresh()

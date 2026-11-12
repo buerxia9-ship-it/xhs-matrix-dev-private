@@ -122,7 +122,7 @@ export class OrchestratorService {
       const existingDrafts = await this.generate.draftsByCampaign(campaignId);
       const draftedTopicIds = new Set(existingDrafts.map((d: any) => d.topicId));
       const perTopic = Math.min(Math.max((c.cadence || {}).draftsPerTopic || 1, 1), 5);
-      let genCount = 0;
+      let genCount = 0, imageOk = 0, imageFailed = 0;
       for (const t of adopted) {
         if (draftedTopicIds.has(t.id)) continue;
         for (let dpi = 0; dpi < perTopic; dpi++) {
@@ -131,19 +131,39 @@ export class OrchestratorService {
         try {
           const draft = await this.generate.generateFromTopic(t.id, { theme: picked.type, embedProduct });
           genCount++;
-          // 全局配图规则（项目级），全自动按它走
+          // 文案成功不等于配图成功：逐草稿记录配图状态，不能默默回退到纯 AI。
           const cad = c.cadence || {};
-          try {
-            await this.generate.generateImageForDraft(
-              draft.id, undefined, cad.imageRatio || "3:4", cad.imageCount || 1, cad.imageSource || "ai",
-            );
-          } catch {}
+          const rawCount = Number(cad.imageCount ?? 1);
+          const imageCount = Number.isFinite(rawCount) ? Math.min(4, Math.max(1, Math.trunc(rawCount))) : 1;
+          const source = cad.imageSource;
+          if (source !== "ai" && source !== "library" && source !== "mix") {
+            imageFailed++;
+            const reason = `草稿 ${draft.id} 未配置合法配图来源，请在项目「全自动设置」选择图库、AI或受保护混合；文案已生成，配图未完成。`;
+            summary.push(reason);
+            await this.log(campaignId, "image", "error", reason);
+          } else {
+            try {
+              const illustrated = await this.generate.generateImageForDraft(
+                draft.id, undefined, cad.imageRatio || "3:4", imageCount, source,
+              );
+              const actual = Array.isArray(illustrated.images) ? illustrated.images.length : 0;
+              if (actual < imageCount) throw new Error(`要求 ${imageCount} 张，实际仅有 ${actual} 张。请在草稿中检查并补图，未通过人工审核不得发布。`);
+              imageOk++;
+              await this.log(campaignId, "image", "ok", `草稿 ${draft.id} 配图 ${actual}/${imageCount} 张，来源 ${source}；仍需人工审核。`);
+            } catch (e: any) {
+              imageFailed++;
+              const reason = e instanceof Error ? e.message : String(e);
+              const detail = `草稿 ${draft.id} 配图失败：${reason}；请检查素材/来源后手动重试，文案不等于完整图文。`;
+              summary.push(detail);
+              await this.log(campaignId, "image", "error", detail);
+            }
+          }
         } catch (e: any) {
           await this.log(campaignId, "generate", "error", e.message);
         }
         } // perTopic
       }
-      summary.push(`生成 ${genCount} 篇草稿（按主题配比）`);
+      summary.push(`文案 ${genCount} 篇；配图成功 ${imageOk} 篇、失败或阻断 ${imageFailed} 篇（仍待人工审核）`);
       await this.log(campaignId, "generate", "ok", `生成${genCount}篇`);
 
       // 闸门 draftReview：semi 停在这里
@@ -242,7 +262,7 @@ export class OrchestratorService {
 
   /** 自动发布：选可用发文号（已登录 + 未超配额 + 未冷却），错峰发布 ready 草稿 */
   private async autoPublish(campaign: any): Promise<string> {
-    const ready = (await this.generate.draftsByCampaign(campaign.id)).filter((d: any) => d.status === "ready");
+    const ready = (await this.generate.draftsByCampaign(campaign.id)).filter((d: any) => d.status === "ready" && d.complianceChecked === true && Array.isArray(d.images) && d.images.length > 0);
     if (!ready.length) return "无待发布草稿";
 
     const pubIds: string[] = campaign.publishAccountIds || [];
