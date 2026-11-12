@@ -23,18 +23,18 @@
       "conclusion": "success"
     }
   },
-  "stage": "synthetic_demo_ci_running",
+  "stage": "synthetic_title_repair_ci_running",
   "work_mode": "review_only_no_code_dispatch",
-  "current_activity": "P3 9组模拟选题已在 GitHub Actions 真实运行，等待编译后输出候选与人设差异对照",
+  "current_activity": "P3 9组模拟选题已实测并发现机械标题；现有界修复已提交，新的 CI 验证中",
   "is_work_actively_running": true,
-  "last_verified_at": "2026-11-12T08:40:23.182Z",
+  "last_verified_at": "2026-11-12T08:46:52.553Z",
   "owner_action_required": false,
   "owner_action": "none for technical preparation; later reviewer may rate representative topics",
   "acceptance_passed": false,
   "progress": {
-    "completed": 2,
+    "completed": 3,
     "total": 5,
-    "percent": 40,
+    "percent": 60,
     "method": "P3 review milestones, not AI product completion",
     "gates": [
       {
@@ -50,7 +50,7 @@
       {
         "id": "run",
         "label": "隔离环境真实运行选题输出",
-        "status": "running"
+        "status": "passed"
       },
       {
         "id": "evaluate",
@@ -60,7 +60,7 @@
       {
         "id": "fix",
         "label": "必要的有限修复并复测",
-        "status": "not_started"
+        "status": "running"
       }
     ]
   },
@@ -96,6 +96,10 @@
     {
       "at": "2026-11-12T08:40:23.182Z",
       "event": "P3 test-only stacked Draft PR #6 opened and CI dispatched; nine synthetic cases, real compiled P2 service; no Codex dispatch"
+    },
+    {
+      "at": "2026-11-12T08:46:52.553Z",
+      "event": "P3 pre-fix run #43184766177 passed 3/3 and logged nine actual titles; confirmed identical 3-account style; bounded fix now in CI #43185566166"
     }
   ],
   "check_count": 0,
@@ -112,14 +116,20 @@
   },
   "code_demo": {
     "pr": 6,
-    "head": "75c81a10f349517f207a64fe1e5b7665710f3ea3",
+    "head": "6858dd8bb45edd9a57ed46747e9fd5b6933293e8",
     "base": "dev/auto-dev-005-evidence-topics",
-    "ci_run_id": 43184766177,
-    "ci_url": "https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43184766177",
+    "ci_run_id": 43185566166,
+    "ci_url": "https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43185566166",
     "ci_status": "in_progress",
     "ci_conclusion": null,
     "synthetic_case_count": 9,
     "real_production_data": false,
-    "deployed_local": false
+    "deployed_local": false,
+    "previous_run_id": 43184766177,
+    "previous_run_conclusion": "success",
+    "fix_commits": [
+      "59fb0bb9844829f7d6fa81adb97d595f3411e8a5",
+      "6858dd8bb45edd9a57ed46747e9fd5b6933293e8"
+    ]
   }
 }
