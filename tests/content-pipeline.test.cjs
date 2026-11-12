@@ -43,6 +43,11 @@ test('image failures visible; packaging integrity and human review remain',()=>{
  const comp=read('runtime-patches/composition-compat.cjs');
  assert.match(comp,/sha\(original\)!==registry\[material\.id\]\.sha256/);
  assert.match(comp,/if\(!tested\|\|mismatches\)/);
+ const gen=read('backend-ts/src/modules/generate/generate.service.ts');
+ assert.ok(gen.includes('source === "library" ? 0 : n - newImages.length'));
+ assert.ok(gen.includes('if (source !== "library") {'));
+ assert.ok(gen.includes('if (newImages.length !== n)'));
+ assert.ok(gen.includes('complianceChecked: false'));
  const logs=read('frontend/src/views/RunLogsView.vue');
  assert.match(logs,/image: '配图'/);
 });
