@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "experiment_id": "AUTO-DEV-005",
+  "project": "XHS_MATRIX_4180",
+  "repository": "buerxia9-ship-it/xhs-matrix-dev-private",
+  "development_pr": 5,
+  "dev_branch": "dev/auto-dev-005-evidence-topics",
+  "base_branch": "dev/auto-dev-004-content-pipeline",
+  "accepted_p0_head": "91299ccfc28ff69fc2460e2f9ae9b6e59791dd78",
+  "initial_p2_head": "cb9245c501d359c2e39b6e244c467d207dc530c0",
+  "last_verified_p2_head": "cb9245c501d359c2e39b6e244c467d207dc530c0",
+  "report_branch": "reports/ceo-status",
+  "stage": "awaiting_codex_receipt",
+  "current_activity": "GPT 已创建 P2 stacked Draft PR 和最后一次 Codex 指令，等待开发者回执；无真实运行证据不得写 Codex RUNNING。",
+  "task_id": "AUTO-DEV-005-P2-IMPLEMENT",
+  "task_comment_id": 6818094533,
+  "task_url": "https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5#issuecomment-6818094533",
+  "dispatch_count_total": 3,
+  "max_dispatches_total": 3,
+  "repair_dispatch_available": 0,
+  "checks": 0,
+  "max_checks": 8,
+  "created_at": "2026-11-12T07:58:51.189Z",
+  "last_verified_at": "2026-11-12T07:58:51.189Z",
+  "owner_action_required": false,
+  "source_delivery_status": "only_scope_marker_no_code",
+  "codex_execution_status": "unknown_not_verified_running",
+  "gpt_review_status": "not_started_waiting_actual_source",
+  "acceptance_passed": false,
+  "monitor": {
+    "enabled": false,
+    "automation_id": null,
+    "last_run": null
+  },
+  "progress": {
+    "completed": 1,
+    "total": 5,
+    "percent": 20,
+    "method": "five P2 milestones, not whole-project progress",
+    "gates": [
+      {
+        "id": "scope",
+        "label": "P2 独立范围与验收边界",
+        "status": "passed"
+      },
+      {
+        "id": "source",
+        "label": "真实分析服务代码提交",
+        "status": "not_started"
+      },
+      {
+        "id": "offline",
+        "label": "来源证据与隔离离线测试",
+        "status": "not_started"
+      },
+      {
+        "id": "regression",
+        "label": "P0/P1 完整回归保留",
+        "status": "not_started"
+      },
+      {
+        "id": "review",
+        "label": "GPT 独立复核与交接",
+        "status": "not_started"
+      }
+    ]
+  },
+  "next_task": "核对 Codex 新回执是否带真实远端代码或完整可应用补丁；若无代码不能空等或宣称执行成功。超出允许派单次数不再 @codex，必要时 GPT 在当前 P2 分支独立实现。",
+  "boundaries": "No main merges, deployments, real XHS, customer data, original packaging, keys, live scraping or paid business APIs; synthetic fixtures only; single stacked PR."
+}
