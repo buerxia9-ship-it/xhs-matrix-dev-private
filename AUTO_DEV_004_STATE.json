@@ -12,7 +12,7 @@
   "task_id": "AUTO-DEV-004-P0P1-IMPLEMENT",
   "check_count": 4,
   "max_checks": 12,
-  "dispatch_count": 2,
+  "dispatch_count": 3,
   "max_dispatches": 3,
   "repair_count": 1,
   "max_repairs_per_stage": 1,
@@ -46,7 +46,7 @@
   "last_verified_at": "2026-11-12T07:54:46.112Z",
   "last_verified_pr_head": "91299ccfc28ff69fc2460e2f9ae9b6e59791dd78",
   "last_verified_changed_files": 19,
-  "last_check_result": "CI #43178252049 success: 27/27 npm tests, 6/6 Sharp/compiled publishing and image-error tests, 1/1 built Vue Chrome synthetic browser smoke, 3/3 CI jobs success. P0/P1 offline acceptance 10/10; real XHS/production not tested.",
+  "last_check_result": "CI #43178252049 success: 27/27 npm tests, 6/6 Sharp/compiled publishing and image-error tests, 1/1 built Vue Chrome synthetic browser smoke, 3/3 CI jobs success. P0/P1 offline acceptance 10/10; real XHS/production not tested. P2 stacked PR #5 scoped and final Codex dispatch 3/3 posted, but this does NOT confirm Codex executing.",
   "patch_request_comment_id": 6814800851,
   "patch_request_task_id": "AUTO-DEV-004-P0P1-PATCH-DELIVERY",
   "codex_delivery_status": "original local commits absent here; parallel GPT replacement verified, desktop review repair delivered on same branch",
@@ -275,5 +275,10 @@
       "browser_tests_passed": 1,
       "browser_tests_total": 1
     }
-  }
+  },
+  "last_dispatch_task_id": "AUTO-DEV-005-P2-IMPLEMENT",
+  "last_dispatch_comment_id": 6818094533,
+  "next_phase_pr": 5,
+  "next_phase_status": "awaiting_codex_receipt_not_running",
+  "global_codex_dispatches_exhausted": true
 }
