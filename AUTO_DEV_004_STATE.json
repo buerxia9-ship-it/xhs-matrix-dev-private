@@ -10,7 +10,7 @@
   "expected_pr_head": "ea70b5dabd55ef18f6aa6f85ee6355f2d21371b1",
   "stage": "awaiting_codex_receipt",
   "task_id": "AUTO-DEV-004-P0P1-IMPLEMENT",
-  "check_count": 0,
+  "check_count": 1,
   "max_checks": 12,
   "dispatch_count": 1,
   "max_dispatches": 3,
@@ -39,5 +39,9 @@
   "automation_title": "小红书矩阵自动开发验收",
   "automation_enabled_observed": true,
   "automation_schedule": "HOURLY condition_watch, Asia/Tokyo",
-  "workflow_note": "Only observed dispatch and scheduled monitoring; no code implementation or Codex receipt verified yet."
+  "workflow_note": "Only observed dispatch and scheduled monitoring; no code implementation or Codex receipt verified yet.",
+  "last_verified_at": "2026-11-12T04:25:35Z",
+  "last_verified_pr_head": "ea70b5dabd55ef18f6aa6f85ee6355f2d21371b1",
+  "last_verified_changed_files": 1,
+  "last_check_result": "No Codex bot receipt; PR #4 diff contains only the experiment scope marker; no implementation or tests verified."
 }
