@@ -2,51 +2,46 @@
 
 ## AUTO-DEV-004｜可核验进度监控
 
-> **当前状态：🟢 第二轮离线集成 CI 正在真实执行。**
+> **当前运行态：⏸️ IDLE / 没有正在执行的 GitHub CI Job。**
 >
-> **执行者：GitHub Actions｜GPT 已完成派发与状态核验｜Codex 未运行｜CEO 无需介入。**
+> **最近一次测试：✅ 3/3 作业成功，27/27 离线测试通过；最后的独立端到端验收仍待核实。**
+>
+> **GPT/Codex：没有可验证的当前运行心跳。定时监控已启用≠GPT 正在工作。CEO 暂无需操作。**
 
-### 验收进度条
+### 证据进度条
 
-**█████████░ 90%｜9/10 个关卡已通过，最后一关正在执行**
+**█████████░ 90%｜9/10 个关卡已核验完成**
 
-进度只按**有真实测试证据的验收关卡**计算，不是工作耗时、最终产品完成率。最后一关包含真实 Sharp 合成、1–4 张图、原包装 SHA/不透明像素与人工审核路径，未通过前不允许合并或部署。
+这是 **P0/P1 当前技术验收关卡** 的完成度，不是整个小红书自动化产品的完成率，也不是工作耗时。第 10 关缺少独立端到端验收结论时，不能自动跳到 100%。
 
-| 关卡 | 当前状态 | 证据 |
+| 执行环节 | 是否正在工作 | 最后证据 / 下一步 |
 | --- | --- | --- |
-| 1. 安全边界 | ✅ 通过 | 独立开发分支、无生产 API / 数据 |
-| 2. P0/P1 代码交付 | ✅ 通过 | [PR #4 代码](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4/files) |
-| 3. GPT 源码复核 | ✅ 通过 | [独立审计](AUTO_DEV_004_REVIEW.md) |
+| GitHub Actions | **当前未运行** | [第二轮 CI #43171080140](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43171080140) 已完成且 success，3/3 job 通过；当前无执行中 Job |
+| GPT 产品负责人 | **无实时心跳证据** | 已核对 CI 结束，并更新 JSON / 看板；下一步检查 1–4 张受保护原图及人工审核端到端证明 |
+| Codex 开发 Agent | **未确认执行中** | 最近是旧的开发回执；没有新任务运行证明 |
+| 自动验收巡检 | **已启用，但不等于正在执行** | Task ID `6af561185e7c819185ab3dc381abb29e`，计划约每小时检查，启动时才产生新执行证据 |
+| CEO | **当前无需介入** | 无待审批产品决策；若系统继续空闲，页面应明确写“未在工作”，不能写“推进中” |
+
+### 10 个真实验收关卡
+
+| 关卡 | 结果 | 证明 |
+| --- | --- | --- |
+| 1. 安全边界 | ✅ 通过 | 原开发分支，main / 正式数据未动 |
+| 2. P0/P1 代码交付 | ✅ 通过 | [PR #4 真实代码](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4/files) |
+| 3. 独立源码复核 | ✅ 通过 | [审计记录](AUTO_DEV_004_REVIEW.md) |
 | 4. 定向离线回归 | ✅ 通过 | 5/5 + 5/5 |
-| 5. 全仓库 npm test | ✅ 通过 | **27/27，退出 0** |
-| 6. 后端/前端锁定依赖安装 | ✅ 通过 | `npm ci` 成功 |
-| 7. Prisma generate | ✅ 通过 | v6.19.3 Client 已生成 |
-| 8. TypeScript / NestJS 构建 | ✅ 通过 | `tsc` + `nest build` |
-| 9. Vue 前端构建 | ✅ 通过 | `vite build` |
-| 10. 真实合成图/包装保护/人工审核端到端 | 🔄 **执行中** | [第二轮 CI #43171080140](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43171080140) |
+| 5. 完整 npm test | ✅ 通过 | [第二轮测试日志](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43171080140) 27/27，退出 0 |
+| 6. 锁定依赖安装 | ✅ 通过 | 第二轮三项 CI 中的依赖安装成功 |
+| 7. Prisma generate | ✅ 通过 | 后端构建 Job 成功 |
+| 8. TypeScript / NestJS 构建 | ✅ 通过 | 后端构建 Job 成功 |
+| 9. Vue 前端构建 | ✅ 通过 | 前端 Job 成功 |
+| 10. 原图完整合成、SHA/像素以及人工审核端到端 | ◻️ **待独立验收** | 新的离线测试可作为部分证据，但尚无全面通过结论 |
 
-### 现在到底谁在干活？
+**下一动作：** GPT 或已调度自动验收任务需独立核验第 10 关及实际源码路径；若缺少可执行用例，必须明确写“未开始/阻断”，不能留在“运行中”。没有完整证据不得合并、发布、部署或进入依赖本阶段的 P2。
 
-| 执行者 | 真实状态 | 当前动作 |
-| --- | --- | --- |
-| **GitHub Actions** | **in_progress** | 第二轮 [Run #43171080140](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43171080140)：Offline synthetic tests completed；Locked Prisma and NestJS build in_progress（Install locked backend dependencies）；Locked frontend build in_progress（Post Run actions/checkout@v4） |
-| **GPT 产品负责人** | 本次会话已启动第二轮 CI、更新看板 | 只在实际会话或定时任务执行时工作，**不是全天候后台进程** |
-| **Codex** | **未运行** | 没有新派单，不把 Codex 本地旧提交冒充当前执行 |
-| **定时监控** | **已启用** | 每小时最多检查一次，最多 12 次；发现失败/里程碑才通知，可能消耗 Work 额度 |
-| **CEO** | **无需介入** | 暂无待批准事项 |
+**最近核对：** 2026-11-12 06:56 UTC（北京时间 14:56）。本看板是定时核验后的 GitHub 快照；本地 HTML 可在浏览器中每 45 秒读取 GitHub Actions 当前状态，但不会读取 GPT/Codex 内部未上报的运行过程。
 
-### 已完成、正在做、阻塞点
-
-**第一轮真实构建已完成：** [Run #43170514893](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43170514893) 的三个 job 全部成功，27/27 离线测试通过，Prisma、后端类型检查/构建和 Vue 构建均成功。
-
-**现在正在做：** 第二轮使用**纯合成透明包装 PNG + 本地 Sharp + 模拟网关/发布器**测试 1、2、3、4 张图、原包装 SHA 与像素保护，以及不允许未经审核草稿直接调用发布服务。修复也已加到 [PublishService](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/blob/dev/auto-dev-004-content-pipeline/backend-ts/src/modules/publish/publish.service.ts) 的核心边界；**测试结果尚未核实前不标记通过**。
-
-**当前阻塞：** 暂无已证实的新阻塞，正在等 CI 结果。如果 CI 失败，将读取日志并只在独立分支做有界修复；不能静默跳过测试。
-
-**最后核验：** 2026/11/12 14:52:06（北京时间 UTC+8）。GitHub Actions [运行页](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43171080140) 比本看板更及时；本看板是核验快照，不是秒级实时遥测。
-
-[唯一状态 JSON](AUTO_DEV_004_STATE.json) · [PR #4](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4) · [历史测试记录](AUTO_DEV_004_DESKTOP_TESTS_20261112.json)
-
+[唯一状态 JSON](AUTO_DEV_004_STATE.json) · [CI 第二轮](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43171080140) · [PR #4](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4) · [历史测试记录](AUTO_DEV_004_DESKTOP_TESTS_20261112.json)
 
 ---
 
