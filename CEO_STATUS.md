@@ -1,38 +1,38 @@
 # CEO 看板｜小红书矩阵 × Agent 自动协作
 
-## 正在跟进的阶段｜AUTO-DEV-005 P2 有来源证据的选题
+## 当前阶段｜AUTO-DEV-005 P2 来源可追溯选题
 
-> **当前实时状态：🟠 WAITING_FOR_CODEX_RECEIPT（已派单，未验证 Codex 正在执行）。**
+> **执行状态：RUNNING · GitHub Actions 正在执行。** Codex 仅回传过未推送的本地提交；GPT 已独立修改并真实提交业务代码到原 [Draft PR #5](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5)。两者不要混淆。
 >
-> **GPT 本次会话已做完的实际动作：** P0/P1 验收、建立 P2 独立分支/Draft PR、提交 Codex 任务并建立有上限的监控。**当前没有正在运行的 P2 CI；定时监控已启用 ≠ GPT/Codex 持续在线运行。**
->
-> **CEO 目前无需要批准的事项。** 后续若 Codex 不交付可核验源码，状态必须明确转成阻断或有界 GPT 中转，不能无限等待。
+> **CEO 目前无需操作。** 仅隔离合成测试；没有真实采集、真实用户、付费 AI、合并 main 或部署。
 
-### P2 真实进度条
+### 真实 P2 进度条
 
-**██░░░░░░░░ 20%｜1/5 个 P2 交付关卡完成**（这是本轮小范围开发里程碑，不是整个运营系统完成度）
+**████░░░░░░ 40%｜2/5 项有证据的 P2 关卡完成。**（不是整个运营系统的进度；最新 CI 待核验后才能继续增加。）
 
-| 里程碑 | 状态 | 真实证据 |
+| 关卡 | 状态 | 可核实证据 |
 | --- | --- | --- |
-| 1. P2 独立开发范围与分支 | ✅ 已完成 | [Draft PR #5](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5) stacked on PR #4，当前仅有范围文档 |
-| 2. 实际来源感知的选题代码 | ◻️ 等待 Codex 交付 | [任务派单 6818094533](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5#issuecomment-6818094533)；评论不等于代码或 Codex RUNNING |
-| 3. 合成来源与多账号隔离回归 | ◻️ 尚未开始 | 必须有真实命令、退出码和 CI 结果 |
-| 4. P0/P1 全套回归不退化 | ◻️ 尚未开始 | 新 P2 分支需重新跑 CI，不能拿 PR #4 的绿色冒充 P2 |
-| 5. GPT 独立代码复核和交接 | ◻️ 尚未开始 | 不合并、不部署、不真实采集或发布 |
+| P2 独立范围与 stacked PR | ✅ 通过 | [PR #5](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5) base=PR #4 开发分支，不是 main |
+| P2 核心选题代码真实交付 | ✅ 已提交 | [PR #5 Diff](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5/files)，HEAD `f96ab706fcc31426073414140e39c696f8de0af3` |
+| 6 项合成来源与隔离测试 | 🟠 CI in_progress | [Run #43181128743](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43181128743) |
+| P0/P1 完整回归保留 | 🟠 CI in_progress | 同一 CI 包含原 27/27、Sharp6/6、Chrome1/1 的回归步骤 |
+| GPT 独立复核与交接 | ◻️ 待完成 | 不声明测试结果、功能、内容质量已通过 |
 
-### 当前是谁在做什么？
+### 当前谁在做什么？
 
-| 执行者 | 当前状态 | 正在做的事 / 下一步 |
+| 执行者 | 可核验运行状态 | 当前工作 / 问题 |
 | --- | --- | --- |
-| **Codex 开发** | **WAITING / 未证实执行中** | 已收到正式 P2 指令，但尚无新 bot 回执或业务代码推送；仅剩一次总派单已经使用完（3/3），不可重复派单 |
-| **GPT 产品负责人** | **本轮派单与 P0/P1 验收已完成；非后台常驻** | 独立核对真实 PR diff / Codex 回执；有代码后审查、必要时经验证中转，无法交付则明确记录 |
-| **P2 GitHub Actions** | **IDLE / 无 P2 CI 运行** | 仅范围文档，没有业务变更及相应测试结果 |
-| **P2 定时巡检** | **已启用，但未必正在执行** | [Task `6af571ead0608191a5cacb0cdb802442`](AUTO_DEV_005_STATE.json)；最多 8 次小时级真实检查。任务运行要单独上报心跳 |
-| **CEO** | **当前无需操作** | 如代码始终无法交付、需要新的权限或范围决策，必须在看板直接显示具体阻塞与操作 |
+| GitHub Actions | **in_progress** | [P2 CI #43181128743](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43181128743)，与最新 head 一致；真实 job 结果由 GitHub 更新 |
+| GPT | **本次会话已交付源码并启动 CI** | 新增来源 ID/证据类型、重复运行去重与多品类合成回归；结束后如无心跳即 IDLE |
+| Codex | **无当前运行证明** | 回执 [6818197650](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5#issuecomment-6818197650) 仅本地 commit，未推送；不能冒充远端代码 |
+| 自动巡检 | **已暂停** | Task `6af571ead0608191a5cacb0cdb802442` 读回 `is_enabled=false`，不是后台持续开发 |
+| CEO | **暂无需介入的决定** | 是否需要解决的新阻塞会以具体失败日志/权限需求呈现 |
 
-**当前唯一下一动作：** P2 代码实际交付（远端 commit 或完整可校验 patch）→ GPT 对证据/多账号隔离复核 → 离线模拟测试 → P0/P1 完整回归 → P2 再决定通过与否。**没有任何真人客户数据或真实 XHS 动作。**
+**当前下一步：** 核对 P2 CI 中真实退出码与测试报告，失败就仅修复这条 PR；通过后再审查来源证据、去重和多账号隔离的代码与输出。全局 Codex 派单次数已用满 3/3，不再重复 @codex。
 
-[本阶段状态 JSON](AUTO_DEV_005_STATE.json) · [P2 验收计划](AUTO_DEV_005_P2_ACCEPTANCE_PLAN.md) · [PR #5](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5)
+**证据更新：** 2026-11-12T08:14:15.188Z UTC；本地 HTML 请使用支持 P2 的新版，并重新连接只读 Token。网页刷新 ≠ Agent 持续运行。
+
+[P2 状态 JSON](AUTO_DEV_005_STATE.json) · [P2 开发 PR](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5) · [GitHub CI](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43181128743)
 
 ### 上一阶段｜AUTO-DEV-004 P0/P1 技术验收
 
