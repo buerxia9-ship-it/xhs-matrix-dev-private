@@ -34,5 +34,10 @@
   "notification_policy": "Only verified milestones, genuine blockers or needed owner decisions; no no-change hourly reports.",
   "created_at": "2026-11-12",
   "request_url": "https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4#issuecomment-6814480636",
-  "note": "Confirmed @codex address that feedback comment exists on PR #4; this does not establish Codex execution or a code patch."
+  "note": "Confirmed @codex address that feedback comment exists on PR #4; this does not establish Codex execution or a code patch.",
+  "automation_id": "6af53fa4f9f0819190739da4d4387b76",
+  "automation_title": "小红书矩阵自动开发验收",
+  "automation_enabled_observed": true,
+  "automation_schedule": "HOURLY condition_watch, Asia/Tokyo",
+  "workflow_note": "Only observed dispatch and scheduled monitoring; no code implementation or Codex receipt verified yet."
 }
