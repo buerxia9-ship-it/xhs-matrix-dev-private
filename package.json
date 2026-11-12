@@ -7,7 +7,7 @@
     "node": "24.22.1"
   },
   "scripts": {
-    "test": "node --test tests/foundation.test.cjs tests/cloud-setup.test.cjs tests/content-pipeline.test.cjs",
+    "test": "node --test tests/foundation.test.cjs tests/cloud-setup.test.cjs tests/content-pipeline.test.cjs tests/content-route-guards.test.cjs",
     "cloud:fixture": "python3 cloud/create-fixture.py",
     "cloud:start": "node cloud/start.cjs"
   }

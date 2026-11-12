@@ -18,13 +18,17 @@ function parseAccountProfile(raw) {
 }
 function publisherIds(campaign) {
   const raw = campaign?.publishAccountIds;
+  if (raw == null || raw === '') return [];
   if (Array.isArray(raw)) return raw;
-  try { const parsed = JSON.parse(raw || '[]'); return Array.isArray(parsed) ? parsed : []; }
-  catch { return []; }
+  if (typeof raw !== 'string') return null;
+  try { const parsed = JSON.parse(raw); return Array.isArray(parsed) ? parsed : null; }
+  catch { return null; }
 }
 async function resolveContentProfile(service, campaign) {
   const ids = publisherIds(campaign);
-  if (!campaign?.personaId || !ids.length) return { kind: 'standard' };
+  if (!ids) return blocked('发布账号列表不是有效数组，无法确认内容权限。');
+  if (!ids.length) return { kind: 'standard' };
+  if (!campaign?.personaId) return blocked('项目未绑定人设，无法确认发布账号内容权限。');
   if (ids.some(id => typeof id !== 'string' || !id.trim()) || new Set(ids).size !== ids.length) {
     return blocked('发布账号列表含空值或重复账号，无法安全绑定内容权限。');
   }
