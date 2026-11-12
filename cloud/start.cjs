@@ -33,7 +33,7 @@ http.Server.prototype.emit=function(event,...args){
  }
  return emit.call(this,event,...args);
 };
-for(const name of ['openai-compat.cjs','workflow-compat.cjs','business-context.cjs','acceptance-compat.cjs','ai-analysis-compat.cjs','composition-compat.cjs','copywriting-compat.cjs'])require(path.join(runtime,name))(backend);
+for(const name of ['openai-compat.cjs','workflow-compat.cjs','business-context.cjs','acceptance-compat.cjs','composition-compat.cjs','copywriting-compat.cjs'])require(path.join(runtime,name))(backend);
 const {SettingsService}=require(path.join(backend,'dist/modules/settings/settings.service.js'));
 SettingsService.prototype.getAutoLaunch=()=>({enabled:false,cloudTest:true});
 SettingsService.prototype.setAutoLaunch=()=>{throw Error('CLOUD_TEST_OS_SETTINGS_BLOCKED');};
