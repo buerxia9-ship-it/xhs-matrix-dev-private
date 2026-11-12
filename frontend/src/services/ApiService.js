@@ -28,6 +28,7 @@ export const apiService = {
     insights: (campaignId) => http.get('/analysis/insights', { params: { campaignId } }).then((r) => r.data),
     topics: (campaignId) => http.get('/analysis/topics', { params: { campaignId } }).then((r) => r.data),
     updateTopic: (id, status) => http.patch(`/analysis/topics/${id}`, { status }).then((r) => r.data),
+    updateTopicDetails: (id, title, angle) => http.patch(`/analysis/topics/${id}/details`, { title, angle }).then((r) => r.data),
     importPains: (campaignId, text) => http.post('/analysis/import-pains', { campaignId, text }).then((r) => r.data),
     samples: (ids) => http.post('/analysis/samples', { ids }).then((r) => r.data),
   },

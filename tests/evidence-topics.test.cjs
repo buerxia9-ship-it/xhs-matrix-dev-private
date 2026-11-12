@@ -95,3 +95,25 @@ test('effective cloud runtime uses core P2 analysis, not legacy AI or category w
  assert.ok(acceptance.includes('complianceChecked:false'));
  assert.ok(acceptance.includes('GenerateService.prototype.updateDraft'));
 });
+
+test('candidate detail editing only changes title/angle and preserves original source provenance and status',async()=>{
+ const original={id:'candidate',title:'猫砂旧问题',angle:'旧角度',status:'candidate',
+   rationale:'证据类型=采集笔记标题；evidence_key=note:n1；note_id=n1；confidence=title_clue_only'};
+ let changed=0;
+ const prisma={topic:{
+   findUnique:async()=>original,
+   update:async({data})=>{changed++;assert.deepEqual(Object.keys(data).sort(),['angle','title']);Object.assign(original,data);return original;}
+ }};
+ const service=new AnalysisService(prisma,{}, {});
+ const result=await service.updateTopicDetails('candidate',{title:'迪拜猫砂怎么选',angle:'从无香与绿茶的选择角度说明',status:'published',rationale:'fake evidence'});
+ assert.equal(result.title,'迪拜猫砂怎么选');assert.equal(result.angle,'从无香与绿茶的选择角度说明');
+ assert.equal(result.status,'candidate');assert.match(result.rationale,/evidence_key=note:n1/);
+ assert.equal(changed,1);
+ original.status='adopted';
+ await assert.rejects(service.updateTopicDetails('candidate',{title:'新标题',angle:'新角度'}),/不能在这里修改/);
+ assert.equal(changed,1);
+ original.status='candidate';
+ await assert.rejects(service.updateTopicDetails('candidate',{title:'短',angle:'合法角度'}),/2–20/);
+ await assert.rejects(service.updateTopicDetails('candidate',{title:'合法标题',angle:''}),/2–180/);
+ assert.equal(changed,1);
+});

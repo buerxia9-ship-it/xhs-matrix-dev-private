@@ -10,17 +10,17 @@
       <div style="display:flex;gap:8px">
         <el-button :icon="Upload" :disabled="!store.currentId" @click="importDialog=true">导入痛点</el-button>
         <el-button type="danger" :icon="DataAnalysis" :loading="running" :disabled="!store.currentId" @click="run">
-          AI分析选题
+          根据来源生成选题
         </el-button>
       </div>
     </el-card>
 
     <el-alert type="info" :closable="false" show-icon style="margin:12px 0"
-      title="AI分析会调用当前文本模型，结合真实搜索标题、人设和正式知识库生成需求假设及选题。AI推测不等于真实评论，需人工复核；相同输入复用结果。" />
+      title="仅使用本项目已采集的笔记标题与关联公开评论生成待审核选题，不调用付费模型。标题线索不等于客户反馈；每条候选显示来源ID，确认后再采纳。重复运行不会清除历史选题。" />
 
     <!-- 导入痛点 -->
-    <el-dialog v-model="importDialog" title="导入客户真实痛点" width="520px">
-      <p class="muted" style="margin-top:0">把你了解到的客户真实痛点/常问问题粘进来，每行一条（或用分号隔开）。会变成痛点+选题，和采集/AI 的结合用。</p>
+    <el-dialog v-model="importDialog" title="导入待核实的问题线索" width="520px">
+      <p class="muted" style="margin-top:0">把你掌握的待核实需求或常见问题粘进来，每行一条。导入内容会标为“人工导入待复核”，不能自动当作客户原话或已证实事实。</p>
       <el-input v-model="importText" type="textarea" :rows="8" placeholder="例：&#10;猫砂倒入时粉尘多吗&#10;猫砂结团是否容易散&#10;公寓里怎样储存备用猫砂" />
       <template #footer>
         <el-button @click="importDialog=false">取消</el-button>
@@ -28,13 +28,25 @@
       </template>
     </el-dialog>
 
+    <el-dialog v-model="topicEditDialog" title="修改选题候选" width="480px">
+      <el-form label-width="85px">
+        <el-form-item label="候选标题"><el-input v-model="topicEdit.title" maxlength="20" show-word-limit /></el-form-item>
+        <el-form-item label="切入角度"><el-input v-model="topicEdit.angle" type="textarea" :rows="3" maxlength="180" show-word-limit /></el-form-item>
+        <el-alert type="info" :closable="false" title="只能修改候选标题与角度；原始来源和证据类型保持不变，仍需人工确认。" />
+      </el-form>
+      <template #footer>
+        <el-button @click="topicEditDialog=false">取消</el-button>
+        <el-button type="primary" :loading="editingTopic" @click="saveTopicEdit">保存修改</el-button>
+      </template>
+    </el-dialog>
+
     <el-empty v-if="!store.currentId" description="请先选择项目（或在总控台新建）" />
 
     <el-row v-else :gutter="16">
       <!-- 左：评论痛点 -->
-      <el-col :span="10">
+      <el-col v-if="insights.length" :span="10">
         <el-card shadow="never">
-          <div class="block-title">用户痛点 <span class="muted">（{{ insights.length }}，来源：采集标题/AI推断/客户导入）</span></div>
+          <div class="block-title">已有痛点记录 <span class="muted">（{{ insights.length }}，历史分析或人工导入；不代表均已核实）</span></div>
           <el-empty v-if="!insights.length" description="点右上「运行分析」" :image-size="60" />
           <div v-else class="pains">
             <div v-for="p in insights" :key="p.id" class="pain" @click="showSamples(p)">
@@ -48,7 +60,7 @@
       </el-col>
 
       <!-- 右：选题候选 -->
-      <el-col :span="14">
+      <el-col :span="insights.length ? 14 : 24">
         <el-card shadow="never">
           <div class="block-title">选题候选 <span class="muted">（点「采纳」进入生成池）</span></div>
           <el-empty v-if="!topics.length" description="运行分析后生成" :image-size="60" />
@@ -60,9 +72,14 @@
                   <el-tag v-if="t.status==='adopted'" type="success" size="small">已采纳</el-tag>
                   <el-tag v-else-if="t.status==='discarded'" type="info" size="small">已弃用</el-tag>
                 </div>
-                <div class="topic-meta">{{ t.angle }} ｜ {{ t.rationale }}</div>
+                <div class="topic-meta">
+                  <el-tag v-if="t.rationale?.includes('confidence=title_clue_only')" size="small" type="info">标题线索 · 待核实</el-tag>
+                  <el-tag v-else-if="t.rationale?.includes('confidence=unverified_public_comment')" size="small" type="warning">公开评论 · 待核实</el-tag>
+                  <span> {{ t.angle }} ｜ {{ t.rationale }}</span>
+                </div>
               </div>
               <div class="topic-ops">
+                <el-button v-if="t.status==='candidate'" size="small" plain @click="openTopicEdit(t)">修改</el-button>
                 <el-button size="small" type="success" plain :disabled="t.status==='adopted'" @click="setStatus(t,'adopted')">采纳</el-button>
                 <el-button size="small" text :disabled="t.status==='discarded'" @click="setStatus(t,'discarded')">弃用</el-button>
               </div>
@@ -98,13 +115,16 @@ const samples = ref([])
 const importDialog = ref(false)
 const importText = ref('')
 const importing = ref(false)
+const topicEditDialog = ref(false)
+const topicEdit = ref({ id: '', title: '', angle: '' })
+const editingTopic = ref(false)
 
 async function doImport() {
   if (!importText.value.trim()) return ElMessage.warning('请粘贴痛点')
   importing.value = true
   try {
     const r = await apiService.analysis.importPains(store.currentId, importText.value)
-    ElMessage.success(`已导入 ${r.imported} 条痛点`)
+    ElMessage.success(`已导入 ${r.imported} 条待复核线索`)
     importDialog.value = false; importText.value = ''
     await loadData()
   } catch (e) { ElMessage.error('导入失败：' + (e?.message || '')) } finally { importing.value = false }
@@ -113,7 +133,7 @@ async function doImport() {
 const maxFreq = computed(() => Math.max(1, ...insights.value.map((i) => i.frequency)))
 function pct(n) { return Math.round((n / maxFreq.value) * 100) }
 function srcTag(p) {
-  if (p.source === '客户导入') return { label: '客户', type: 'danger' }
+  if (p.source === '人工导入待复核' || p.source === '客户导入') return { label: '人工线索', type: 'warning' }
   if (p.source?.startsWith('AI')) return { label: 'AI', type: 'warning' }
   return { label: '采集', type: 'info' }
 }
@@ -137,6 +157,22 @@ async function run() {
   } finally {
     running.value = false
   }
+}
+function openTopicEdit(t) {
+  topicEdit.value = { id: t.id, title: t.title, angle: t.angle || '' }
+  topicEditDialog.value = true
+}
+async function saveTopicEdit() {
+  if (!topicEdit.value.title.trim() || !topicEdit.value.angle.trim()) return ElMessage.warning('请填写标题与切入角度')
+  editingTopic.value = true
+  try {
+    const t = await apiService.analysis.updateTopicDetails(topicEdit.value.id, topicEdit.value.title, topicEdit.value.angle)
+    const current = topics.value.find(x => x.id === t.id)
+    if (current) { current.title = t.title; current.angle = t.angle }
+    topicEditDialog.value = false
+    ElMessage.success('候选已修改，来源证据保持不变')
+  } catch (e) { ElMessage.error('修改失败：' + (e?.message || '')) }
+  finally { editingTopic.value = false }
 }
 async function setStatus(t, status) {
   await apiService.analysis.updateTopic(t.id, status)

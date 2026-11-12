@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger, BadRequestException } from "@nestjs/common";
 import { PrismaService } from "../../common/database/prisma.service";
 import { CampaignService } from "../campaign/campaign.service";
 import { GatewayService } from "../gateway/gateway.service";
@@ -164,6 +164,24 @@ export class AnalysisService {
       where: { campaignId },
       orderBy: [{ status: "asc" }, { hotScore: "desc" }],
     });
+  }
+
+  // An operator may refine the candidate angle without destroying provenance.
+  // A confirmed or discarded item is immutable here; it must never be reset by edit.
+  async updateTopicDetails(id: string, input: { title?: string; angle?: string }) {
+    const topic = await this.prisma.topic.findUnique({ where: { id } });
+    if (!topic) throw new BadRequestException("候选选题不存在");
+    if (topic.status !== "candidate") throw new BadRequestException("已采纳或弃用的选题不能在这里修改，请保留历史记录");
+    const title = typeof input?.title === "string" ? input.title.trim() : "";
+    const angle = typeof input?.angle === "string" ? input.angle.trim() : "";
+    if (Array.from(title).length < 2 || Array.from(title).length > 20) {
+      throw new BadRequestException("候选标题需为2–20字");
+    }
+    if (Array.from(angle).length < 2 || Array.from(angle).length > 180) {
+      throw new BadRequestException("切入角度需为2–180字");
+    }
+    // Deliberately do not accept rationale/source provenance or status fields.
+    return this.prisma.topic.update({ where: { id }, data: { title, angle } });
   }
 
   async updateTopicStatus(id: string, status: "adopted" | "discarded" | "candidate") {
