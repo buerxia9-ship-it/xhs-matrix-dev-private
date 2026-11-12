@@ -23,13 +23,13 @@
       "conclusion": "success"
     }
   },
-  "stage": "preview_handoff_prepared",
-  "work_mode": "review_only_no_code_dispatch",
-  "current_activity": "CEO已完成首轮三账号标题反馈：总代与官号选题方向认可；渝宝B01指出预置答案、混淆问题与解释，需要修订。当前正在准备隔离本地预览，尚未在用户电脑部署或执行集成图文验收。",
+  "stage": "windows_synthetic_preview_ready_for_ceo",
+  "work_mode": "local_preview_technical_validation_complete_waiting_ceo",
+  "current_activity": "Windows 独立 4181 只读预览与 4182 离线合成可写沙盒已实际启动；58 个本地测试节点通过，三账号浏览器流程与失败截图已保存。原 4180 进程、数据库、账号/API 配置及受保护文件指纹未变。开发验收本轮完成；服务运行不等于 GPT/Codex 持续开发或 CEO 内容认可。",
   "is_work_actively_running": false,
-  "last_verified_at": "2026-11-12T09:08:30.512Z",
-  "owner_action_required": false,
-  "owner_action": "暂无；Windows Codex 需要按隔离预览交接在单独工作区启动，随后CEO可在浏览器验收图文流程。",
+  "last_verified_at": "2026-11-12T11:04:59.334Z",
+  "owner_action_required": true,
+  "owner_action": "请在这台 Windows 电脑打开 http://127.0.0.1:4182/，依次人工评审 B01/D01/O01 的来源、选题、Mock 文案、1–4 张合成配图与审核体验；真实内容和品牌图像质量仍未通过。",
   "acceptance_passed": false,
   "progress": {
     "completed": 4,
@@ -81,7 +81,7 @@
       "issue": "选题已支持编辑和采纳，但没有用户评分与采纳理由的独立质量回流字段"
     }
   ],
-  "next_task": "Build Windows isolated preview from stacked PR #6 on separate checkout and synthetic DB. First use existing CLOUD_TEST_MODE=1 read-only port 4181 to inspect; then if editable full flow is required, separately implement sandbox writable preview on distinct port/database while keeping collect, login, AI, publish and real images blocked. Do not overwrite 4180 or production DB. Register B01 concept QA case before content pipeline acceptance.",
+  "next_task": "CEO 人工操作 4182 并反馈；GPT 独立审核 Draft PR #7（stacked on PR #6）及本地测试证据。保持 4180 不变，不自动合并，不接真实账号/产品图/付费 API，不扩展自动调度。",
   "boundaries": "Only synthetic/user-approved non-sensitive evidence. No real XHS collection/DM, customer files, original packaging images, paid API, production DB, deployment or main merge; no new Codex dispatch under the exhausted 3/3 cap.",
   "automation_status": "not_scheduled",
   "history": [
@@ -108,6 +108,10 @@
     {
       "at": "2026-11-12T09:08:30.512Z",
       "event": "Recorded CEO partial P3 feedback: B01 revision-required conceptual question vs answer; D01 and O01 valuable direction; selected isolated local preview before further blind GitHub title refinement."
+    },
+    {
+      "at": "2026-11-12T11:04:59.334Z",
+      "event": "Explicit user authorized both read-only 4181 and writable offline synthetic 4182 on Windows. Actual local build/tests/browser flows passed; original 4180 fingerprint unchanged. Draft PR #7 created without main merge. No new automatic Codex dispatch, no real account/API/media. Content-quality gate remains pending."
     }
   ],
   "check_count": 0,
@@ -141,7 +145,8 @@
     ],
     "ci_updated_at": "2026-11-12T08:50:30Z",
     "latest_titles_reviewed": false,
-    "report": "AUTO_DEV_006_DEMO_RESULTS.md"
+    "report": "AUTO_DEV_006_DEMO_RESULTS.md",
+    "isolated_preview_started": true
   },
   "worker_heartbeat": {
     "gpt": {
@@ -153,7 +158,12 @@
       "current_step": "P3 nine-case compiled service outputs and bounded repair verified; waiting human operating-quality review"
     },
     "codex": {
-      "status": "not_verified_running"
+      "status": "completed_local_preview_validation",
+      "updated_at": "2026-11-12T11:04:59.334Z",
+      "finished_at": "2026-11-12T11:04:59.334Z",
+      "expires_at": null,
+      "source": "interactive_windows_preview",
+      "current_step": "Independent previews running; no further autonomous development, awaiting CEO/PO review"
     }
   },
   "quality_feedback": {
@@ -179,12 +189,61 @@
     }
   },
   "preview": {
-    "status": "design_ready_not_deployed",
+    "status": "RUNNING_SYNTHETIC_ONLY",
     "local_running_workbench": "http://127.0.0.1:4180",
     "existing_read_only_preview_port": 4181,
     "source_branch": "dev/auto-dev-006-topic-quality-demo",
     "source_head": "19754dc48dfaa7021e0c8249428835424d209bde",
     "handoff_path": "AUTO_DEV_006_LOCAL_PREVIEW_HANDOFF.md",
-    "production_access": false
+    "production_access": false,
+    "verified_at": "2026-11-12T11:04:59.334Z",
+    "local_commit": "aee81ff394fb1319e200cfe5beb17532a4ea0dc8",
+    "review_commit": "267583b0175f233feb8af6ea7f1799a21d4efb11",
+    "tree": "d80a3335f8ce9403a8cd0d6fc2c96cdf54ebc9a9",
+    "review_pr": 7,
+    "review_pr_url": "https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/7",
+    "read_only": {
+      "status": "RUNNING",
+      "url": "http://127.0.0.1:4181",
+      "pid": 27544,
+      "database": ".cloud-data/fixture.db",
+      "accounts": 0,
+      "providers": 0
+    },
+    "synthetic_sandbox": {
+      "status": "RUNNING_OFFLINE_MOCK",
+      "url": "http://127.0.0.1:4182",
+      "pid": 26208,
+      "database": ".cloud-data/sandbox/fixture.db",
+      "synthetic_accounts": 3,
+      "persona_scopes": 3,
+      "product_knowledge_scopes": 3,
+      "real_accounts": 0,
+      "paid_api_calls": 0
+    },
+    "tests": {
+      "foundation": 27,
+      "p2": 7,
+      "content_images_vue_p3": 11,
+      "sandbox": 12,
+      "browser_journeys": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    "production_safety": {
+      "same_pid": 12552,
+      "database_file_unchanged": true,
+      "tables_compared": 20,
+      "changed_tables": 0,
+      "files_compared": 462,
+      "changed_files": 0,
+      "account_config_unchanged": true,
+      "provider_config_unchanged": true,
+      "health_http": 200,
+      "checks_read_only": true
+    },
+    "production_deployed": false,
+    "ceo_acceptance": "PENDING_USER",
+    "continuous_monitoring": false
   }
 }
