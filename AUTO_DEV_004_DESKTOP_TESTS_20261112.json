@@ -1,0 +1,357 @@
+{
+  "initial": [
+    {
+      "name": "node-version",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "--version"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\baseline",
+      "exitCode": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "v24.22.1\r\n",
+      "stderr": ""
+    },
+    {
+      "name": "npm-version",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "D:/codex/Tools/node/node_modules/npm/bin/npm-cli.js",
+        "--version"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\baseline",
+      "exitCode": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "11.6.2\n",
+      "stderr": "npm warn Unknown user config \"store-dir\". This will stop working in the next major version of npm.\n"
+    },
+    {
+      "name": "foundation",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "--test",
+        "tests/foundation.test.cjs"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\baseline",
+      "exitCode": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "✔ test data cannot escape the isolated repository (8.1349ms)\n✔ production credentials and DB settings are not forwarded (6.6415ms)\n✔ no production data, credentials, bitmaps or caches in code baseline (29.1302ms)\n✔ existing 25 language-policy regression cases run without a model (214.9988ms)\n✔ Terra parameter compatibility remains an offline test (188.1375ms)\n✔ synthetic SQLite fixture has zero accounts/providers and valid associations (919.2075ms)\n✔ network denial has a live localhost positive control (192.5831ms)\n✔ upstream license retained and fixtures explicitly non-authoritative (5.6375ms)\n✔ fixture creator rejects a reparse path instead of writing into another directory (385.6481ms)\nℹ tests 9\nℹ suites 0\nℹ pass 9\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 2241.2937\n",
+      "stderr": ""
+    },
+    {
+      "name": "npm-test",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "D:/codex/Tools/node/node_modules/npm/bin/npm-cli.js",
+        "test"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\baseline",
+      "exitCode": 1,
+      "signal": null,
+      "error": null,
+      "stdout": "\n> xhs-matrix-cloud-code-baseline@0.1.0 test\n> node --test tests/foundation.test.cjs tests/cloud-setup.test.cjs\n\n✔ missing fixture is created; approved fixture is reused without changing DB or manifest (2851.9964ms)\n✖ unknown database is refused before setup installs packages or creates caches (342.4029ms)\n✔ rejects account without overwriting or renaming (1948.2417ms)\n✔ rejects provider without overwriting or renaming (1733.3957ms)\n✔ rejects changed content with demo IDs without overwriting or renaming (1717.4044ms)\n✔ rejects extra schema without overwriting or renaming (1745.1151ms)\n✔ missing or altered manifest cannot authorize an existing database (1941.5354ms)\n✖ corrupt database, SQLite sidecar and symlink are refused without modification (3124.9601ms)\n✔ test data cannot escape the isolated repository (8.9012ms)\n✔ production credentials and DB settings are not forwarded (8.2746ms)\n✔ no production data, credentials, bitmaps or caches in code baseline (27.4825ms)\n✔ existing 25 language-policy regression cases run without a model (228.3906ms)\n✔ Terra parameter compatibility remains an offline test (180.9615ms)\n✔ synthetic SQLite fixture has zero accounts/providers and valid associations (673.5099ms)\n✔ network denial has a live localhost positive control (133.5901ms)\n✔ upstream license retained and fixtures explicitly non-authoritative (2.0771ms)\n✔ fixture creator rejects a reparse path instead of writing into another directory (375.1223ms)\nℹ tests 17\nℹ suites 0\nℹ pass 15\nℹ fail 2\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 15726.2269\n\n✖ failing tests:\n\ntest at tests\\cloud-setup.test.cjs:52:1\n✖ unknown database is refused before setup installs packages or creates caches (342.4029ms)\n  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Synthetic fixture refused/. Input:\n  \n  ''\n  \n      at refusedUnchanged (D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\baseline\\tests\\cloud-setup.test.cjs:32:10)\n      at TestContext.<anonymous> (D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\baseline\\tests\\cloud-setup.test.cjs:54:13)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: '',\n    expected: /Synthetic fixture refused/,\n    operator: 'match',\n    diff: 'simple'\n  }\n\ntest at tests\\cloud-setup.test.cjs:80:1\n✖ corrupt database, SQLite sidecar and symlink are refused without modification (3124.9601ms)\n  Error: EPERM: operation not permitted, symlink 'D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\baseline\\.cloud-data\\setup-regression-Sj0Sas\\.cloud-data\\retained.db' -> 'D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\baseline\\.cloud-data\\setup-regression-Sj0Sas\\.cloud-data\\fixture.db'\n      at Object.symlinkSync (node:fs:1937:11)\n      at TestContext.<anonymous> (D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\baseline\\tests\\cloud-setup.test.cjs:89:35)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    errno: -4048,\n    code: 'EPERM',\n    syscall: 'symlink',\n    path: 'D:\\\\codex\\\\Projects\\\\xhs-auto-dev-004-recovery-20261112\\\\baseline\\\\.cloud-data\\\\setup-regression-Sj0Sas\\\\.cloud-data\\\\retained.db',\n    dest: 'D:\\\\codex\\\\Projects\\\\xhs-auto-dev-004-recovery-20261112\\\\baseline\\\\.cloud-data\\\\setup-regression-Sj0Sas\\\\.cloud-data\\\\fixture.db'\n  }\n",
+      "stderr": "npm warn Unknown user config \"store-dir\". This will stop working in the next major version of npm.\n"
+    },
+    {
+      "name": "content-pipeline",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "--test",
+        "tests/content-pipeline.test.cjs"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\baseline",
+      "exitCode": 1,
+      "signal": null,
+      "error": null,
+      "stdout": "",
+      "stderr": "Could not find 'tests/content-pipeline.test.cjs'\n"
+    },
+    {
+      "name": "prisma-generate",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "D:/codex/Tools/node/node_modules/npm/bin/npm-cli.js",
+        "--prefix",
+        "backend-ts",
+        "run",
+        "prisma:generate"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\baseline",
+      "exitCode": 1,
+      "signal": null,
+      "error": null,
+      "stdout": "\n> xhs-matrix-backend@0.1.0 prisma:generate\n> prisma generate\n\n",
+      "stderr": "npm warn Unknown user config \"store-dir\". This will stop working in the next major version of npm.\n'prisma' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+    },
+    {
+      "name": "backend-tsc",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "D:/codex/Tools/node/node_modules/npm/bin/npm-cli.js",
+        "--prefix",
+        "backend-ts",
+        "run",
+        "tsc"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\baseline",
+      "exitCode": 1,
+      "signal": null,
+      "error": null,
+      "stdout": "\n> xhs-matrix-backend@0.1.0 tsc\n> tsc --noEmit\n\n",
+      "stderr": "npm warn Unknown user config \"store-dir\". This will stop working in the next major version of npm.\n'tsc' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+    },
+    {
+      "name": "frontend-build",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "D:/codex/Tools/node/node_modules/npm/bin/npm-cli.js",
+        "--prefix",
+        "frontend",
+        "run",
+        "build"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\baseline",
+      "exitCode": 1,
+      "signal": null,
+      "error": null,
+      "stdout": "\n> xhs-matrix-frontend@0.1.0 build\n> vite build\n\n",
+      "stderr": "npm warn Unknown user config \"store-dir\". This will stop working in the next major version of npm.\n'vite' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+    }
+  ],
+  "incoming": [
+    {
+      "name": "node-version",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "--version"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726",
+      "exitCode": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "v24.22.1\r\n",
+      "stderr": ""
+    },
+    {
+      "name": "content-pipeline",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "--test",
+        "tests/content-pipeline.test.cjs"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726",
+      "exitCode": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "✔ capability follows account/persona binding, not a database ID (2.0118ms)\n✔ ordinary account isolation and missing publisher fail closed (0.2126ms)\n✔ mixed publishers and malformed capability fail closed (0.3914ms)\n✔ effective patch chain uses shared account capability and no fixed persona ID (3.018ms)\n✔ image failures visible; packaging integrity and human review remain (1.7626ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 150.31\n",
+      "stderr": ""
+    },
+    {
+      "name": "npm-test",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "D:/codex/Tools/node/node_modules/npm/bin/npm-cli.js",
+        "test"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726",
+      "exitCode": 1,
+      "signal": null,
+      "error": null,
+      "stdout": "\n> xhs-matrix-cloud-code-baseline@0.1.0 test\n> node --test tests/foundation.test.cjs tests/cloud-setup.test.cjs tests/content-pipeline.test.cjs\n\n✔ missing fixture is created; approved fixture is reused without changing DB or manifest (1702.3323ms)\n✖ unknown database is refused before setup installs packages or creates caches (201.6172ms)\n✔ rejects account without overwriting or renaming (1275.3719ms)\n✔ rejects provider without overwriting or renaming (1271.9114ms)\n✔ rejects changed content with demo IDs without overwriting or renaming (1250.5039ms)\n✔ rejects extra schema without overwriting or renaming (1315.7605ms)\n✔ missing or altered manifest cannot authorize an existing database (1345.4737ms)\n✖ corrupt database, SQLite sidecar and symlink are refused without modification (2260.5941ms)\n✔ capability follows account/persona binding, not a database ID (3.5704ms)\n✔ ordinary account isolation and missing publisher fail closed (0.412ms)\n✔ mixed publishers and malformed capability fail closed (0.4575ms)\n✔ effective patch chain uses shared account capability and no fixed persona ID (4.5935ms)\n✔ image failures visible; packaging integrity and human review remain (4.1495ms)\n✔ test data cannot escape the isolated repository (5.5786ms)\n✔ production credentials and DB settings are not forwarded (7.216ms)\n✔ no production data, credentials, bitmaps or caches in code baseline (15.4955ms)\n✔ existing 25 language-policy regression cases run without a model (132.9019ms)\n✔ Terra parameter compatibility remains an offline test (141.6916ms)\n✔ synthetic SQLite fixture has zero accounts/providers and valid associations (478.7746ms)\n✔ network denial has a live localhost positive control (106.8473ms)\n✔ upstream license retained and fixtures explicitly non-authoritative (1.4758ms)\n✔ fixture creator rejects a reparse path instead of writing into another directory (266.4113ms)\nℹ tests 22\nℹ suites 0\nℹ pass 20\nℹ fail 2\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 10788.3063\n\n✖ failing tests:\n\ntest at tests\\cloud-setup.test.cjs:52:1\n✖ unknown database is refused before setup installs packages or creates caches (201.6172ms)\n  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Synthetic fixture refused/. Input:\n  \n  ''\n  \n      at refusedUnchanged (D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726\\tests\\cloud-setup.test.cjs:32:10)\n      at TestContext.<anonymous> (D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726\\tests\\cloud-setup.test.cjs:54:13)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: '',\n    expected: /Synthetic fixture refused/,\n    operator: 'match',\n    diff: 'simple'\n  }\n\ntest at tests\\cloud-setup.test.cjs:80:1\n✖ corrupt database, SQLite sidecar and symlink are refused without modification (2260.5941ms)\n  Error: EPERM: operation not permitted, symlink 'D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726\\.cloud-data\\setup-regression-BEt10W\\.cloud-data\\retained.db' -> 'D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726\\.cloud-data\\setup-regression-BEt10W\\.cloud-data\\fixture.db'\n      at Object.symlinkSync (node:fs:1937:11)\n      at TestContext.<anonymous> (D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726\\tests\\cloud-setup.test.cjs:89:35)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    errno: -4048,\n    code: 'EPERM',\n    syscall: 'symlink',\n    path: 'D:\\\\codex\\\\Projects\\\\xhs-auto-dev-004-recovery-20261112\\\\incoming-3564726\\\\.cloud-data\\\\setup-regression-BEt10W\\\\.cloud-data\\\\retained.db',\n    dest: 'D:\\\\codex\\\\Projects\\\\xhs-auto-dev-004-recovery-20261112\\\\incoming-3564726\\\\.cloud-data\\\\setup-regression-BEt10W\\\\.cloud-data\\\\fixture.db'\n  }\n",
+      "stderr": "npm warn Unknown user config \"store-dir\". This will stop working in the next major version of npm.\n"
+    },
+    {
+      "name": "prisma-generate",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "D:/codex/Tools/node/node_modules/npm/bin/npm-cli.js",
+        "--prefix",
+        "backend-ts",
+        "run",
+        "prisma:generate"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726",
+      "exitCode": 1,
+      "signal": null,
+      "error": null,
+      "stdout": "\n> xhs-matrix-backend@0.1.0 prisma:generate\n> prisma generate\n\n",
+      "stderr": "npm warn Unknown user config \"store-dir\". This will stop working in the next major version of npm.\n'prisma' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+    },
+    {
+      "name": "backend-tsc",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "D:/codex/Tools/node/node_modules/npm/bin/npm-cli.js",
+        "--prefix",
+        "backend-ts",
+        "run",
+        "tsc"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726",
+      "exitCode": 1,
+      "signal": null,
+      "error": null,
+      "stdout": "\n> xhs-matrix-backend@0.1.0 tsc\n> tsc --noEmit\n\n",
+      "stderr": "npm warn Unknown user config \"store-dir\". This will stop working in the next major version of npm.\n'tsc' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+    },
+    {
+      "name": "frontend-build",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "D:/codex/Tools/node/node_modules/npm/bin/npm-cli.js",
+        "--prefix",
+        "frontend",
+        "run",
+        "build"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726",
+      "exitCode": 1,
+      "signal": null,
+      "error": null,
+      "stdout": "\n> xhs-matrix-frontend@0.1.0 build\n> vite build\n\n",
+      "stderr": "npm warn Unknown user config \"store-dir\". This will stop working in the next major version of npm.\n'vite' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+    },
+    {
+      "name": "syntax-business-context",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "--check",
+        "runtime-patches/business-context.cjs"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726",
+      "exitCode": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "syntax-composition-compat",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "--check",
+        "runtime-patches/composition-compat.cjs"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726",
+      "exitCode": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "syntax-content-capability",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "--check",
+        "runtime-patches/content-capability.cjs"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726",
+      "exitCode": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "syntax-copywriting-compat",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "--check",
+        "runtime-patches/copywriting-compat.cjs"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726",
+      "exitCode": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "syntax-workflow-compat",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "--check",
+        "runtime-patches/workflow-compat.cjs"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\incoming-3564726",
+      "exitCode": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "candidate": [
+    {
+      "name": "routes",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "--test",
+        "tests/content-route-guards.test.cjs"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\candidate",
+      "exitCode": 0,
+      "stdout": "✔ actual workflow guard rejects protected AI/library after persona rebind, no fallback or model (38.746ms)\n✔ actual workflow+composition mix blocks missing registered asset before model, counts 1..4 (4.0818ms)\n✔ actual wrapper passes ordinary account to original route without protected composition (2.5221ms)\n✔ malformed configured publisher IDs must block before standard AI fallback (2.2086ms)\n✔ malformed lists and configured publishers without persona are blocked by resolver (13.4129ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 211.867\n",
+      "stderr": ""
+    },
+    {
+      "name": "content",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "--test",
+        "tests/content-pipeline.test.cjs"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\candidate",
+      "exitCode": 0,
+      "stdout": "✔ capability follows account/persona binding, not a database ID (2.3635ms)\n✔ ordinary account isolation and missing publisher fail closed (0.2121ms)\n✔ mixed publishers and malformed capability fail closed (0.2331ms)\n✔ effective patch chain uses shared account capability and no fixed persona ID (29.76ms)\n✔ image failures visible; packaging integrity and human review remain (40.0908ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 228.2191\n",
+      "stderr": ""
+    },
+    {
+      "name": "npm-test",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "D:/codex/Tools/node/node_modules/npm/bin/npm-cli.js",
+        "test"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\candidate",
+      "exitCode": 1,
+      "stdout": "\n> xhs-matrix-cloud-code-baseline@0.1.0 test\n> node --test tests/foundation.test.cjs tests/cloud-setup.test.cjs tests/content-pipeline.test.cjs tests/content-route-guards.test.cjs\n\n✔ missing fixture is created; approved fixture is reused without changing DB or manifest (1604.3102ms)\n✖ unknown database is refused before setup installs packages or creates caches (191.8895ms)\n✔ rejects account without overwriting or renaming (1280.0817ms)\n✔ rejects provider without overwriting or renaming (1255.8786ms)\n✔ rejects changed content with demo IDs without overwriting or renaming (1245.4918ms)\n✔ rejects extra schema without overwriting or renaming (1286.9915ms)\n✔ missing or altered manifest cannot authorize an existing database (1312.0051ms)\n✖ corrupt database, SQLite sidecar and symlink are refused without modification (2207.0442ms)\n✔ capability follows account/persona binding, not a database ID (2.9144ms)\n✔ ordinary account isolation and missing publisher fail closed (0.384ms)\n✔ mixed publishers and malformed capability fail closed (0.3776ms)\n✔ effective patch chain uses shared account capability and no fixed persona ID (3.1287ms)\n✔ image failures visible; packaging integrity and human review remain (2.1729ms)\n✔ actual workflow guard rejects protected AI/library after persona rebind, no fallback or model (18.5265ms)\n✔ actual workflow+composition mix blocks missing registered asset before model, counts 1..4 (6.7494ms)\n✔ actual wrapper passes ordinary account to original route without protected composition (10.1025ms)\n✔ malformed configured publisher IDs must block before standard AI fallback (3.5722ms)\n✔ malformed lists and configured publishers without persona are blocked by resolver (18.9337ms)\n✔ test data cannot escape the isolated repository (6.3574ms)\n✔ production credentials and DB settings are not forwarded (6.1948ms)\n✔ no production data, credentials, bitmaps or caches in code baseline (19.2806ms)\n✔ existing 25 language-policy regression cases run without a model (158.4815ms)\n✔ Terra parameter compatibility remains an offline test (191.8763ms)\n✔ synthetic SQLite fixture has zero accounts/providers and valid associations (433.5907ms)\n✔ network denial has a live localhost positive control (91.6912ms)\n✔ upstream license retained and fixtures explicitly non-authoritative (9.8165ms)\n✔ fixture creator rejects a reparse path instead of writing into another directory (227.9341ms)\nℹ tests 27\nℹ suites 0\nℹ pass 25\nℹ fail 2\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 10581.5603\n\n✖ failing tests:\n\ntest at tests\\cloud-setup.test.cjs:52:1\n✖ unknown database is refused before setup installs packages or creates caches (191.8895ms)\n  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Synthetic fixture refused/. Input:\n  \n  ''\n  \n      at refusedUnchanged (D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\candidate\\tests\\cloud-setup.test.cjs:32:10)\n      at TestContext.<anonymous> (D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\candidate\\tests\\cloud-setup.test.cjs:54:13)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: '',\n    expected: /Synthetic fixture refused/,\n    operator: 'match',\n    diff: 'simple'\n  }\n\ntest at tests\\cloud-setup.test.cjs:80:1\n✖ corrupt database, SQLite sidecar and symlink are refused without modification (2207.0442ms)\n  Error: EPERM: operation not permitted, symlink 'D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\candidate\\.cloud-data\\setup-regression-PT7fo5\\.cloud-data\\retained.db' -> 'D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\candidate\\.cloud-data\\setup-regression-PT7fo5\\.cloud-data\\fixture.db'\n      at Object.symlinkSync (node:fs:1937:11)\n      at TestContext.<anonymous> (D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\candidate\\tests\\cloud-setup.test.cjs:89:35)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    errno: -4048,\n    code: 'EPERM',\n    syscall: 'symlink',\n    path: 'D:\\\\codex\\\\Projects\\\\xhs-auto-dev-004-recovery-20261112\\\\candidate\\\\.cloud-data\\\\setup-regression-PT7fo5\\\\.cloud-data\\\\retained.db',\n    dest: 'D:\\\\codex\\\\Projects\\\\xhs-auto-dev-004-recovery-20261112\\\\candidate\\\\.cloud-data\\\\setup-regression-PT7fo5\\\\.cloud-data\\\\fixture.db'\n  }\n",
+      "stderr": "npm warn Unknown user config \"store-dir\". This will stop working in the next major version of npm.\n"
+    },
+    {
+      "name": "syntax",
+      "command": [
+        "C:\\Users\\不二\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "--check",
+        "runtime-patches/content-capability.cjs"
+      ],
+      "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\candidate",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "delivery": {
+    "head": "3c72de97cff77c5f439f4ede8fec445a70d455dd",
+    "verifiedFiles": 142,
+    "command": "git apply --check AUTO-DEV-004-from-ea70b5d.patch",
+    "cwd": "D:\\codex\\Projects\\xhs-auto-dev-004-recovery-20261112\\baseline",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": "",
+    "patchSha256": "141f1aac2a35e826634cd6b3818e965c21136dc4708a856e7ba7c96ae21e6def",
+    "patchBytes": 43957,
+    "patchFiles": 13
+  },
+  "pre_repair_guard_reproduction": {
+    "command": "node --test audit_auto_dev_004/incoming-runtime-guards.test.cjs",
+    "head": "3564726c01c2d211b81c4693d81df088dbde21ca",
+    "exitCode": 1,
+    "stdout": "✔ actual workflow guard rejects protected AI/library after persona rebind, no fallback or model (11.4688ms)\n✔ actual workflow+composition mix blocks missing registered asset before model, counts 1..4 (3.8932ms)\n✔ actual wrapper passes ordinary account to original route without protected composition (2.2041ms)\n✖ malformed configured publisher IDs must block before standard AI fallback (3.0004ms)\nℹ tests 4\nℹ suites 0\nℹ pass 3\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 174.7506\n\n✖ failing tests:\n\ntest at audit_auto_dev_004\\incoming-runtime-guards.test.cjs:51:1\n✖ malformed configured publisher IDs must block before standard AI fallback (3.0004ms)\n  AssertionError [ERR_ASSERTION]: Missing expected rejection.\n      at async TestContext.<anonymous> (C:\\Users\\不二\\.codex\\.chatgpt-projects\\g-p-6a27ac38f950819197c537edeafa7494\\audit_auto_dev_004\\incoming-runtime-guards.test.cjs:54:2)\n      at async Test.run (node:internal/test_runner/test:1409:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: undefined,\n    expected: undefined,\n    operator: 'rejects',\n    diff: 'simple'\n  }\n",
+    "scope": "Actual workflow/composition guard code via VM; Prisma/Nest/Sharp/model service doubles. No bitmap generation or model/network calls."
+  }
+}
