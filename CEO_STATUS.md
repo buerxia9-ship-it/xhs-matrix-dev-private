@@ -2,37 +2,39 @@
 
 ## 当前阶段｜AUTO-DEV-005 P2 来源可追溯选题
 
-> **执行状态：RUNNING · GitHub Actions 正在执行。** Codex 仅回传过未推送的本地提交；GPT 已独立修改并真实提交业务代码到原 [Draft PR #5](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5)。两者不要混淆。
+> **当前：RUNNING · GitHub Actions 当前执行。**
 >
-> **CEO 目前无需操作。** 仅隔离合成测试；没有真实采集、真实用户、付费 AI、合并 main 或部署。
+> **本轮已真实交付：** 在 [P2 Draft PR #5](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5) 提交有来源证据的选题、动态项目隔离、候选标题/角度编辑、可视化来源标签。原始证据与人工审核状态不能被普通编辑覆盖。
+>
+> **CEO 目前不需要额外授权。Codex 无新运行证据；GPT 本次会话实际提交了代码；监控自动化 is_enabled=false，请勿误判为后台自动运行。**
 
-### 真实 P2 进度条
+### P2 进度（只计算实际验证完成的关卡）
 
-**████░░░░░░ 40%｜2/5 项有证据的 P2 关卡完成。**（不是整个运营系统的进度；最新 CI 待核验后才能继续增加。）
+**████░░░░░░ 40%｜2/5 关已确认，当前 HEAD 需重新跑新 UI 测试。** 此数字不是整个产品开发完成度。
 
-| 关卡 | 状态 | 可核实证据 |
+| 环节 | 真实状态 | 证据 |
 | --- | --- | --- |
-| P2 独立范围与 stacked PR | ✅ 通过 | [PR #5](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5) base=PR #4 开发分支，不是 main |
-| P2 核心选题代码真实交付 | ✅ 已提交 | [PR #5 Diff](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5/files)，HEAD `f96ab706fcc31426073414140e39c696f8de0af3` |
-| 6 项合成来源与隔离测试 | 🟠 CI in_progress | [Run #43181128743](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43181128743) |
-| P0/P1 完整回归保留 | 🟠 CI in_progress | 同一 CI 包含原 27/27、Sharp6/6、Chrome1/1 的回归步骤 |
-| GPT 独立复核与交接 | ◻️ 待完成 | 不声明测试结果、功能、内容质量已通过 |
+| P2 范围与 stacked 结构 | ✅ 已完成 | [PR #5](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5) base=P0/P1 独立开发分支，未合并 main |
+| P2 代码实际交付 | ✅ 已提交 | GitHub HEAD `61c113acc4af349bea3d15653295768fa0fd57d1`，不是 Codex 本地 commit |
+| P2 合成来源与编辑回归 | ⏳ 重新验证 | 上一轮 [CI #43181128743](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43181128743) 6/6 通过；本轮新增编辑用例 [CI #43181879226](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43181879226) |
+| P0/P1 旧保护回归 | ⏳ 本轮再次校验 | 27 项通用、6 项 Sharp/人工审核、1 项浏览器保护不得退化 |
+| GPT 独立验收与交接 | ◻️ 待 CI 结果 | 选题是否真正自然、符合账号人设仍需运营人工内容评估 |
 
-### 当前谁在做什么？
+### 真实 Agent 与测试进程状态
 
-| 执行者 | 可核验运行状态 | 当前工作 / 问题 |
+| 执行者 | 当前状态 | 说明 |
 | --- | --- | --- |
-| GitHub Actions | **in_progress** | [P2 CI #43181128743](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43181128743)，与最新 head 一致；真实 job 结果由 GitHub 更新 |
-| GPT | **本次会话已交付源码并启动 CI** | 新增来源 ID/证据类型、重复运行去重与多品类合成回归；结束后如无心跳即 IDLE |
-| Codex | **无当前运行证明** | 回执 [6818197650](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5#issuecomment-6818197650) 仅本地 commit，未推送；不能冒充远端代码 |
-| 自动巡检 | **已暂停** | Task `6af571ead0608191a5cacb0cdb802442` 读回 `is_enabled=false`，不是后台持续开发 |
-| CEO | **暂无需介入的决定** | 是否需要解决的新阻塞会以具体失败日志/权限需求呈现 |
+| GitHub Actions | **IN_PROGRESS** | [本轮真实构建/测试 #43181879226](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43181879226)，关联 P2 最新 SHA |
+| GPT | 本次会话真实写入并复核 P2 代码 | 不把没有心跳的会话外时间写成持续执行 |
+| Codex | **没有当前运行回执** | [旧 bot 回执](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5#issuecomment-6818197650) 只报告本地提交，未交付源代码 |
+| P2 自动巡检 | **PAUSED / 已暂停** | Task `6af571ead0608191a5cacb0cdb802442` 刚查 `is_enabled=false`，不能依赖它自动续办 |
+| CEO | **无需介入** | 若出现权限/产品决策问题会显示实际阻塞；状态空闲即代表没有证据证明任务在运行 |
 
-**当前下一步：** 核对 P2 CI 中真实退出码与测试报告，失败就仅修复这条 PR；通过后再审查来源证据、去重和多账号隔离的代码与输出。全局 Codex 派单次数已用满 3/3，不再重复 @codex。
+**下一步：** 收集本轮 P2 选题+编辑的实际构建/测试日志，处理任何失败；然后出具仅限离线合成验收的结论和独立 GitHub 证据。P0/P1 已经 10/10 受控离线通过，但并未合并、部署或验证真实运营内容质量。
 
-**证据更新：** 2026-11-12T08:14:15.188Z UTC；本地 HTML 请使用支持 P2 的新版，并重新连接只读 Token。网页刷新 ≠ Agent 持续运行。
+**最近核对：** 2026-11-12T08:19:56.501Z UTC。HTML 本地看板需使用支持 P2 的 v1.3；GitHub 状态刷新不等于自动调用 GPT/Codex。
 
-[P2 状态 JSON](AUTO_DEV_005_STATE.json) · [P2 开发 PR](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5) · [GitHub CI](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43181128743)
+[P2 状态 JSON](AUTO_DEV_005_STATE.json) · [GitHub PR #5](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5) · [当前 CI](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43181879226)
 
 ### 上一阶段｜AUTO-DEV-004 P0/P1 技术验收
 
