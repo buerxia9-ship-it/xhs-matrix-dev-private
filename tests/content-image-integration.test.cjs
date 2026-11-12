@@ -40,6 +40,7 @@ async function syntheticComposition() {
   class GenerateService {}
   GenerateService.prototype.generateImageForDraft = async function(){fallbackCalls++;throw Error('unsafe fallback');};
   const fakeRequire = id => {
+    id = id.replaceAll('\\', '/'); // Windows and Linux must intercept the same compiled module.
     if (id.includes('content-capability.cjs')) return capability;
     if (id === '@nestjs/common') return {BadRequestException:class BadRequestException extends Error {}};
     if (id === 'sharp') return sharp;
