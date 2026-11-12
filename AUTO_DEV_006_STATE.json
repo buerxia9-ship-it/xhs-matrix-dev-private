@@ -25,7 +25,7 @@
   },
   "stage": "quality_review_prepared",
   "work_mode": "review_only_no_code_dispatch",
-  "current_activity": "已经形成 P3 账号差异化选题质量验收用例和人工评分规则；未执行真实AI生成或用户质量审核。",
+  "current_activity": "P3 质量验收实验已准备，有限自动推进任务已启用；下次计划执行不代表此刻正在执行。",
   "is_work_actively_running": false,
   "last_verified_at": "2026-11-12T08:26:41.177Z",
   "owner_action_required": false,
@@ -89,5 +89,14 @@
       "at": "2026-11-12T08:26:41.177Z",
       "event": "GPT independently inspected P2 remote AnalysisService + UI and prepared business acceptance stage"
     }
-  ]
+  ],
+  "check_count": 0,
+  "max_checks": 6,
+  "automation": {
+    "id": "Automation_fc651202956c81918b9565f09630f3cc",
+    "enabled": true,
+    "schedule": "FREQ=HOURLY;COUNT=6",
+    "next_scheduled_time": "2026-11-12T16:29:02+08:00",
+    "status": "scheduled_not_running"
+  }
 }
