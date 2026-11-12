@@ -1,37 +1,50 @@
 # CEO 看板｜小红书矩阵 × Agent 自动协作
 
-## 当前阶段｜P3 成果演示与运营质量验收（AUTO-DEV-006）
+## 当前阶段｜P3 选题质量真实演示（AUTO-DEV-006）
 
-> **当前执行事实：P3 的 9 组“真实代码 × 合成数据”演示已提交并触发 GitHub Actions。** 状态是否仍 RUNNING 请以 [GitHub Run #43184766177](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43184766177) 最新结果为准；不能把旧运行状态当成持久在线证明。
+> **当前执行态：IDLE / 完整 CI 已结束，不存在正在运行的 GitHub 任务。**
 >
-> **本地 127.0.0.1:4180 工作台尚未同步 Draft PR #4/#5/#6。** 用户在本地看到的是当前安装版本；不要在未隔离/未核对的业务库上点击“立即跑/全自动发布”来试新版功能。CEO 暂无权限审批要求。
+> **最新实测：P2 7/7 + P3 3/3 通过，9 个合成案例的实际输出及修复前后对比已保存。** 技术验证成功 ≠ 运营选题质量通过。
+>
+> **当前需要 CEO 做一项明确验收：评价渝宝、总代理、官号的真实候选标题是否愿意采纳。** 不需要任何新的 GitHub 授权，不要在未隔离的本地业务库上尝试自动运行。
 
-### P3 证据进度条
+### P3 进度条
 
-**████░░░░░░ 40%｜2/5 个 P3 阶段门槛完成（准备和范围），第 3 项 CI 正在运行或待核验。** 这不是产品整体完成率，也不是选题质量的评分。
+**████████░░ 80%｜4/5 个有证据的阶段关卡完成；唯一未通过：人工运营质量验收。** 这只是 P3 的阶段完成度，并非小红书工作台整体完成率。
 
-| 关卡 | 状态 | 实际证据 / 下一步 |
+| 阶段 | 当前证据 | 状态 |
 | --- | --- | --- |
-| 1. 确认旧技术基线 | ✅ 通过 | [P0/P1 PR #4](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4) 和 [P2 PR #5](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5) 均有离线技术验收 |
-| 2. 三账号、多品类的合成情景 | ✅ 已准备 | 9 组场景：渝宝/总代理/官号、猫砂/饮水机/狗粮 + 来源核实 |
-| 3. 用实际 P2 源码生成标题和角度 | 🔄 实际 CI 已触发 | [P3 Draft PR #6](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/6) 为测试专用；[运行日志](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43184766177)；只用合成数据 |
-| 4. 运营质量人工审查 | ◻️ 待验收 | 真实输出出现后，再做“活人感/人设/具体性/事实边界”判断 |
-| 5. 限界修复与对照复测 | ◻️ 未启动 | 不能擅自视为完成，也不启用真实采集/发布 |
+| 1. 基线与安全 | [P0/P1 PR #4](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4)、[P2 PR #5](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/5) 既有离线验收，均未合并 | ✅ 通过 |
+| 2. 三种账号/多品类样本 | 渝宝、总代理、官号及饮水机、狗粮，共9组模拟输入 | ✅ 完成 |
+| 3. 运行真实选题服务 | [初次 CI #43184766177](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43184766177) 输出 9 组候选并查出“怎么判断？”模板化问题 | ✅ 完成 |
+| 4. 用户运营质量评审 | 真实输出是否有账号人设、直接自然、具体、无虚构：**尚未收到 CEO 对标题的采纳/修改意见** | 🟠 待 CEO 评审 |
+| 5. 限界代码修复与复测 | 解决重复迪拜、断句和“零粉尘”问题，[最终 CI #43185971761](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43185971761) completed/success；P2 7/7 + P3 3/3 | ✅ 技术复测通过 |
 
-### 正在工作的是谁？
+### 实际输出：现在可以验收了
 
-| 对象 | 核验结论 |
-| --- | --- |
-| **GitHub Actions** | P3 CI 实际已排入运行；是否在运行，以 GitHub run 的实时 `status` 为准。 |
-| **GPT** | 本轮创建了 P3 测试用独立分支、测试代码和 Draft PR，执行了 GitHub 状态校验；不能声称离开本会话后全天工作。 |
-| **Codex** | 本轮没有新派单、没有当前运行回执；以前的 3/3 派单额度不重复使用。 |
-| **CEO** | 暂无须做的部署或发布操作；下一步可以看实际合成选题样例并打分。 |
+| 账号 | 真实 P3 代码输出（模拟线索） | 运营验收 |
+| --- | --- | --- |
+| 渝宝店主 | **迪拜猫砂｜白色木薯颗粒是不是粉尘？** | 需要 CEO 确认是否像店主日常口吻 |
+| 总代理 | **迪拜猫砂｜门店渠道合作需要哪些资料？** | 需要 CEO 确认渠道切入是否有价值 |
+| TUXTOOX 官号 | **迪拜猫砂知识｜低粉尘是否等于零粉尘？** | 需要 CEO 确认专业而亲和的表达 |
 
-**当前重点差距：** 新版 P2 的标题生成仍有“怎么判断？”的统一模板，未根据渝宝老板/总代/官号分别选择内容角度。P3 测试包含“三个不同人设对同一问题”的实际输出对比，避免用 100% 技术通过掩盖运营质量问题。
+[完整 9 组真实测试输出、修复前后对比](AUTO_DEV_006_DEMO_RESULTS.md)。测试全部是 SYNTHETIC；“采集标题”和“评论”只模拟来源类型，绝非真实客户、真实配送或真实反馈。
 
-**安全限制：** PR #6 叠加在未合并的 PR #5 上，仅新增演示测试与 CI；不修改当前本地工作台，不触碰生产数据/模型费用/真实猫砂包装或小红书发布。任何质量认可只能基于实际输出，不是假设。 
+### 现在谁在工作？
 
-[本阶段唯一状态 JSON](AUTO_DEV_006_STATE.json) · [P3 质量验收量表](AUTO_DEV_006_QUALITY_ACCEPTANCE.md) · [P3 PR #6](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/6) · [P3 CI](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43184766177)
+| 执行方 | 是否在执行 | 下一步 |
+| --- | --- | --- |
+| GitHub Actions | **COMPLETED / 已结束** | 最后 [#43185971761](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43185971761) 为 success，无当前进行中的 CI |
+| GPT | 本次交付已完成；**没有持续执行心跳** | 等 CEO 反馈质量问题后，再确定是否需要进一步修复 |
+| Codex | **没有当前运行证明** | 未重复派单，旧额度 3/3 已用尽 |
+| CEO | **需要评价 3 个实际标题** | 说“可用/需修改/弃用”以及一句希望的角度即可 |
+
+**重要边界：** 你打开的 `http://127.0.0.1:4180` 当前运行工作台不是自动从 Draft PR 更新的，P0/P1/P2/P3 的代码没有推送到你电脑；本页面只是实际已交付 GitHub 的开发证据。要在工作台交互验收，必须另做隔离的开发预览环境，不能直接覆盖现有正式 DB。任何图文、原包装或真实账号测试均需单独验收，不通过此阶段自动合并/部署。
+
+**最新验收时点：** 2026-11-12，基于 PR #6 最终 HEAD `19754dc48dfaa7021e0c8249428835424d209bde` 与同 HEAD GitHub CI 证据。页面按需刷新是状态快照，不是持续运行证明。
+
+[本阶段 JSON](AUTO_DEV_006_STATE.json) · [真实测试输出](AUTO_DEV_006_DEMO_RESULTS.md) · [P3 PR #6](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/6)
+
 
 ---
 
