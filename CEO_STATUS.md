@@ -1,18 +1,33 @@
 # CEO 看板｜小红书矩阵 × Agent 自动协作
 
-## 最新进度｜AUTO-DEV-004（2026-11-12）
+## 实时执行状态｜AUTO-DEV-004
 
-> **状态：🟡 真实开发任务已派发，等待 Codex 交付代码；还没有任何业务代码测试通过的证据。**
+> **当前：等待 Codex 补交完整代码补丁｜自动续办暂停｜无需 CEO 介入**
 >
-> 用户已批准：GitHub 调用在受控自动开发迭代内无需逐项审批，允许独立开发分支修改业务代码与合成数据测试。并未授权生产数据、付费业务 API、自动合并到 main 或部署。
+> **这不是 Codex 正在运行的证明。** Codex 已完成一次本地代码修改并回报结果，但修改**没有推送到 GitHub**。GPT 已再次发出“补交完整补丁”的任务，等待可复核的源代码，尚未通过验收。
+>
+> **状态最后核对：2026-11-12（以 GitHub 最新回执与自动化任务状态为准）**。本看板是定时/事件检查的状态快照，不是秒级运行监控。
 
-- **开发分支：** `dev/auto-dev-004-content-pipeline`；[Draft PR #4](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4)；起始 main commit `ab382ba0a4ecb4c8ef0c2cda7360f884d74b25d0`。
-- **已真实派单：** [Codex 请求 6814480636](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4#issuecomment-6814480636)，Task ID `AUTO-DEV-004-P0P1-IMPLEMENT`。
-- **首个实现目标：** P0 图像生成失败提示与路线配置，P1 稳定账户能力绑定；禁止为了绕过问题继续叠层覆写，保留原包装保护、账号隔离、1–4 张图、人工审核。
-- **当前远端事实：** PR #4 当前 head `ea70b5dabd55ef18f6aa6f85ee6355f2d21371b1` 仅包含开发边界说明文档，Codex 尚未返回实施结果；不得把已发请求写成已写代码。
-- **续办机制：** 自动验收 `6af53fa4f9f0819190739da4d4387b76` 已创建且启用，按小时有界检查（最多12次、合计至多3次Codex派单，包含首次），仅在实际里程碑/阻塞时通知；达到终态须停用本任务。旧两项实验和旧简报任务继续停用。
-- **状态文件：** [AUTO_DEV_004_STATE.json](AUTO_DEV_004_STATE.json)。若代码证据与测试通过，再建立独立下一项 P2“带来源证据的精准选题”；绝不自动合并/部署。
-- **重要限制：** GPT 可以通过 GitHub 读取并复核，但远端测试通过与正式 Windows 业务工作台效果是两件事；真实内容质量仍需用户样本验收。
+| 责任方 / 环节 | 当前状态 | 正在做什么 / 下一动作 |
+| --- | --- | --- |
+| **Codex 开发** | 🟠 已完成一次本地修改；等待补交 | 自报本地 commit `42271be5fdcabc689799e1b1bba76c9d7f9d31e1`，**未推送**；需返回完整可复核补丁，不能仅返回文字摘要 |
+| **GPT 产品负责人** | 🟠 已发补丁补交指令；待验收 | [补交请求 #6814800851](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4#issuecomment-6814800851)；收到代码后逐文件检查、验证合成测试与架构质量 |
+| **GitHub 开发 PR** | ⚪ 尚无业务代码交付 | [PR #4](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4) 当前只有实验说明文档，head `ea70b5dabd55ef18f6aa6f85ee6355f2d21371b1`；没有可验收的远端业务代码 |
+| **自动续办任务** | ⏸️ **已暂停** | 任务 `6af53fa4f9f0819190739da4d4387b76` 当前 `is_enabled=false`；**不会自行继续下一次定时检查**，除非重新启用 |
+| **CEO 是否需介入** | **不需要** | 当前无需审批或提供素材；仅在完整补丁无法交付、关键技术风险无法解决或超出授权边界时介入 |
+
+**实际开发结果（Codex 自报，尚未独立验收）：** 5 项新增离线测试通过、前端构建通过；全量测试 21/22（Node 版本不符），Prisma 生成 HTTP 403，后端 TypeScript 编译未通过。**不能宣称代码修复完成。**
+
+**当前任务：** P0 配图失败可见与正确图像来源；P1 稳定账号能力路由，避免硬编码数据库 ID；保持原包装保护、账号隔离、1–4 张图与人工审核。
+
+**下一动作顺序：** Codex 返回完整补丁 → GPT 验证代码和测试 → 如通过则提交到隔离开发分支 → 独立验收 → 必要时一次修复 → 再进入 P2 选题质量优化。未经实际证据不得跳过步骤。
+
+**状态更新规则：** `开发中` 仅用于有真实运行回执；`等待交付` 表示已派单但无代码；`GPT 验收中` 表示已拿到完整可复核代码；`暂停` 表示自动任务未启用；`需 CEO 介入` 必须附具体决策事项。状态以 [AUTO_DEV_004_STATE.json](AUTO_DEV_004_STATE.json) 与 GitHub/自动化核验为准。
+
+### 追踪与历史
+
+- [首次 Codex 开发请求](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4#issuecomment-6814480636) → [Codex 本地修改回执](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4#issuecomment-6814625683) → [完整补丁补交请求](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4#issuecomment-6814800851)
+- 当前总派单：**2/3**；已记录检查：**1/12**。历史实验 PR #2 与旧自动化不在本次范围。
 
 ---
 
