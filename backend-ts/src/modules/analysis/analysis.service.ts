@@ -29,12 +29,42 @@ export class AnalysisService {
     return Array.from(text).slice(0, 18).join("").trim();
   }
 
-  private topicTitle(product: string, concern: string, region = ""): string {
-    const name = product.replace(/[A-Za-z0-9_\-\s]/g, "").trim() || product;
-    const scope = (region && !name.includes(region) ? region : "") + Array.from(name).slice(-6).join("");
-    const clue = Array.from(concern).slice(0, 9).join("");
-    const suffix = /[？?]$/.test(clue) ? "" : "怎么判断？";
-    return Array.from(scope + "：" + clue + suffix).slice(0, 20).join("");
+  // Only interpret approved persona positioning for the editorial lens.
+  // Missing persona falls back to neutral; never hardcode a database persona ID.
+  private async editorialLens(campaign: any): Promise<"shop" | "channel" | "brand" | "general"> {
+    const explicit = campaign?.cadence?.topicEditorialLens;
+    if (["shop", "channel", "brand", "general"].includes(explicit)) return explicit;
+    if (!campaign?.personaId) return "general";
+    const persona = await this.prisma.persona.findUnique({
+      where: { id: campaign.personaId }, select: { positioning: true },
+    });
+    const p = String(persona?.positioning || "");
+    if (/渠道|供货|供应链|经销|分销|总代理/.test(p)) return "channel";
+    if (/品牌官方|品牌官号|品牌知识|配方科普|检测科普/.test(p)) return "brand";
+    if (/宠物店老板|宠物店店主|店主日常|真实配送/.test(p)) return "shop";
+    return "general";
+  }
+
+  // Preserve a source clue without appending a stock question to a truncated sentence.
+  // All titles remain unapproved candidates; a title clue never proves a customer claim.
+  private topicTitle(product: string, concern: string, region = "",
+    lens: "shop" | "channel" | "brand" | "general" = "general"): string {
+    const category = /猫砂/.test(product) ? "猫砂" :
+      /饮水机/.test(product) ? "饮水机" : /狗粮/.test(product) ? "狗粮" :
+      (product.replace(/[A-Za-z0-9_\-\s]/g, "").trim() || product).slice(0, 6);
+    const leading = region && !category.includes(region) ? region : "";
+    const editorial = lens === "channel" ? "渠道" : lens === "brand" ? "知识" : "";
+    const prefix = leading + category + editorial + "｜";
+    let focus = String(concern || "").trim();
+    if (region && focus.startsWith(region)) focus = focus.slice(region.length).trim();
+    if (focus.startsWith(category)) focus = focus.slice(category.length).trim();
+    focus = focus.replace(/^[:：、，\s]+/, "").replace(/[?？。!！]+$/, "").trim();
+    const max = Math.max(0, 20 - Array.from(prefix).length);
+    const question = /(?:吗|呢|什么|为何|为什么|怎么|如何|是否|哪些|几天|多少|区别|是不是)/.test(focus);
+    const canQuestion = Array.from(focus).length + (question ? 1 : 0) <= max;
+    const cut = Array.from(focus).slice(0, max - (canQuestion && question ? 1 : 0)).join("");
+    const ending = canQuestion && question ? "？" : "";
+    return prefix + cut + ending;
   }
 
   /**
@@ -50,6 +80,7 @@ export class AnalysisService {
       : [];
     const terms = [...new Set([product, ...keywords.filter(k => !["迪拜", "Dubai"].includes(k))].filter(x => x.length >= 2))];
     const region = keywords.includes("迪拜") ? "迪拜" : "";
+    const lens = await this.editorialLens(campaign);
     const rows = await this.prisma.note.findMany({
       where: { campaignId },
       select: { id: true, title: true, source: true, likes: true },
@@ -88,7 +119,7 @@ export class AnalysisService {
       const key = "note:" + note.id;
       candidates.push({
         key,
-        title: this.topicTitle(product, focus, region),
+        title: this.topicTitle(product, focus, region, lens),
         angle: "基于本项目采集笔记标题的选题线索：" + focus + "。只用于讨论判断方法，不构成体验或评论事实。",
         rationale: "证据类型=采集笔记标题；evidence_key=" + key +
           "；note_id=" + note.id + "；confidence=title_clue_only；" +
@@ -101,7 +132,7 @@ export class AnalysisService {
       const key = "comment:" + comment.id;
       candidates.push({
         key,
-        title: this.topicTitle(product, focus, region),
+        title: this.topicTitle(product, focus, region, lens),
         angle: "基于已关联公开评论的选题线索：" + focus + "。需核实上下文，不能当作客户体验。",
         rationale: "证据类型=关联评论线索；evidence_key=" + key +
           "；note_id=" + comment.noteId + "；comment_id=" + comment.id +
