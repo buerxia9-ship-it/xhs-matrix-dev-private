@@ -41,7 +41,7 @@
   "automation_title": "小红书矩阵自动开发验收",
   "automation_enabled_observed": true,
   "automation_schedule": "HOURLY condition_watch, Asia/Tokyo",
-  "workflow_note": "Only observed dispatch and scheduled monitoring; no code implementation or Codex receipt verified yet.",
+  "workflow_note": "Codex local commit received but not pushed; complete patch requested. Auto monitor was paused then explicitly re-enabled and independently confirmed enabled; next hourly check scheduled.",
   "last_verified_at": "2026-11-12T04:25:35Z",
   "last_verified_pr_head": "ea70b5dabd55ef18f6aa6f85ee6355f2d21371b1",
   "last_verified_changed_files": 1,
@@ -51,5 +51,6 @@
   "codex_delivery_status": "local_commit_only_not_pushed",
   "codex_execution_status": "completed_local_run_not_currently_running",
   "gpt_review_status": "blocked_missing_full_patch",
-  "owner_action_required": false
+  "owner_action_required": false,
+  "automation_last_observed_next": "2026-11-12T14:26:08+09:00"
 }
