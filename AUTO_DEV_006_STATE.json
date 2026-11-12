@@ -23,13 +23,13 @@
       "conclusion": "success"
     }
   },
-  "stage": "awaiting_operational_quality_review",
+  "stage": "preview_handoff_prepared",
   "work_mode": "review_only_no_code_dispatch",
-  "current_activity": "P3 9组真实代码+合成数据已执行和两次小范围标题修复；最新 CI 全绿，当前无运行中的 P3 测试。等待 CEO 评价三个账号的实际候选质量，尚未同步本地工作台。",
+  "current_activity": "CEO已完成首轮三账号标题反馈：总代与官号选题方向认可；渝宝B01指出预置答案、混淆问题与解释，需要修订。当前正在准备隔离本地预览，尚未在用户电脑部署或执行集成图文验收。",
   "is_work_actively_running": false,
-  "last_verified_at": "2026-11-12T08:52:20.862Z",
-  "owner_action_required": true,
-  "owner_action": "审核九组真实合成候选中的 B01 渝宝、D01 总代、O01 官号，确认是否值得采纳及希望修改的表达；不需要授权 GitHub/部署。",
+  "last_verified_at": "2026-11-12T09:08:30.512Z",
+  "owner_action_required": false,
+  "owner_action": "暂无；Windows Codex 需要按隔离预览交接在单独工作区启动，随后CEO可在浏览器验收图文流程。",
   "acceptance_passed": false,
   "progress": {
     "completed": 4,
@@ -55,7 +55,7 @@
       {
         "id": "evaluate",
         "label": "来源/人设/自然程度逐条人工审核",
-        "status": "awaiting_owner_review"
+        "status": "feedback_received_partial_not_passed"
       },
       {
         "id": "fix",
@@ -81,7 +81,7 @@
       "issue": "选题已支持编辑和采纳，但没有用户评分与采纳理由的独立质量回流字段"
     }
   ],
-  "next_task": "CI 真实输出9组候选后抽取标题/角度与来源，分类审核不同账号口吻是否雷同；本地工作台未经同步不可冒充已部署",
+  "next_task": "Build Windows isolated preview from stacked PR #6 on separate checkout and synthetic DB. First use existing CLOUD_TEST_MODE=1 read-only port 4181 to inspect; then if editable full flow is required, separately implement sandbox writable preview on distinct port/database while keeping collect, login, AI, publish and real images blocked. Do not overwrite 4180 or production DB. Register B01 concept QA case before content pipeline acceptance.",
   "boundaries": "Only synthetic/user-approved non-sensitive evidence. No real XHS collection/DM, customer files, original packaging images, paid API, production DB, deployment or main merge; no new Codex dispatch under the exhausted 3/3 cap.",
   "automation_status": "not_scheduled",
   "history": [
@@ -104,6 +104,10 @@
     {
       "at": "2026-11-12T08:52:20.862Z",
       "event": "P3 final CI #43185971761 success: original P2 7/7 + P3 3/3; fixed broken zero-dust question, 9 synthetic outputs archived. Local app not deployed. 4/5 evidence gates; human quality review pending."
+    },
+    {
+      "at": "2026-11-12T09:08:30.512Z",
+      "event": "Recorded CEO partial P3 feedback: B01 revision-required conceptual question vs answer; D01 and O01 valuable direction; selected isolated local preview before further blind GitHub title refinement."
     }
   ],
   "check_count": 0,
@@ -151,5 +155,36 @@
     "codex": {
       "status": "not_verified_running"
     }
+  },
+  "quality_feedback": {
+    "received_at": "2026-11-12T09:08:30.512Z",
+    "source": "owner user message in current conversation",
+    "overall": "Improved over prior outputs; distributor and official directions valuable and potentially adoptable, still not permission to publish.",
+    "cases": {
+      "B01": {
+        "status": "revision_required",
+        "observed_bad_title": "迪拜猫砂｜白色木薯颗粒是不是粉尘？",
+        "reason": "Question prematurely names material as tapioca, undermining consumer uncertainty. Need observed appearance first, product-specific explanation later.",
+        "target_title": "迪拜猫砂｜袋底白色颗粒是粉尘吗？",
+        "approved_fact_boundary": "The owner supplied that in the shown product packaging the powder-like white granules are tapioca. Treat as product-specific owner statement, not blanket claim that no dust exists. Exact packaging/image context requires review."
+      },
+      "D01": {
+        "status": "positive_direction_pending_end_to_end_review",
+        "title": "迪拜猫砂｜门店渠道合作需要哪些资料？"
+      },
+      "O01": {
+        "status": "positive_direction_pending_end_to_end_review",
+        "title": "迪拜猫砂知识｜低粉尘是否等于零粉尘？"
+      }
+    }
+  },
+  "preview": {
+    "status": "design_ready_not_deployed",
+    "local_running_workbench": "http://127.0.0.1:4180",
+    "existing_read_only_preview_port": 4181,
+    "source_branch": "dev/auto-dev-006-topic-quality-demo",
+    "source_head": "19754dc48dfaa7021e0c8249428835424d209bde",
+    "handoff_path": "AUTO_DEV_006_LOCAL_PREVIEW_HANDOFF.md",
+    "production_access": false
   }
 }
