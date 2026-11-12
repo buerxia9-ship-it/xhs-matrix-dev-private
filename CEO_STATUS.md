@@ -2,27 +2,30 @@
 
 ## 实时执行状态｜AUTO-DEV-004
 
-> **当前：🔴 代码交付受阻｜Codex 本地执行已结束｜GPT 无法开始独立验收｜自动续办已暂停｜需要 CEO 协助打通一次交付渠道**
+> **当前：🟠 真实业务代码已交付 GitHub，GPT 源码复核已完成；等待完整运行验收。**
 >
-> **最后核验：2026-11-12 13:44（北京时间）**。这是 GitHub 与自动化状态核验的快照，不是秒级进程监控。
+> **CEO：当前无需介入。自动续办：已暂停。Codex：未在持续运行。**
+>
+> 最后核对：**2026-11-12 06:08 UTC**。这是 GitHub 与自动化状态快照，不是秒级运行遥测。
 
-| 环节 | 当前状态 | 可核查的事实 / 下一动作 |
+| 执行主体 | 当前状态 | 已核实的事实 / 下一步 |
 | --- | --- | --- |
-| **Codex 开发** | 🔴 本地执行已结束，代码未交付 | 已有两次 [Codex 回执](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4#issuecomment-6814912525)；第二次自报本地 commit `ea31fd22fd98c917081a603393b0f49b210f3154`、11 个改动文件、补丁 281 行/17,632 字节，但**只提供生成命令和摘要，没有完整补丁内容，也没有远端 push** |
-| **GPT 产品负责人** | 🟠 待验收材料，尚未开始代码验收 | 已检查两次回执、PR head 与文件数；没有完整源码 diff，无法核对真实改动与独立测试；**不是“验收中”或“已通过”** |
-| **GitHub PR #4** | ⚪ 仍只有实验说明文件 | [开发 PR #4](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4) head `ea70b5dabd55ef18f6aa6f85ee6355f2d21371b1`，1 commit / 1 changed file；尚无 11 个业务代码文件的远端修改 |
-| **自动续办** | ⏸️ 已暂停 | 自动化 `6af53fa4f9f0819190739da4d4387b76` 已通过 update 返回 `is_enabled=false`；避免无代码情况下重复空转 |
-| **CEO 介入** | **需要一次交付渠道协助** | 让 Codex 将本地 commit 的完整源码提交到 **已有 PR #4 开发分支**，或导出完整 `git diff --binary ea70b5dabd55ef18f6aa6f85ee6355f2d21371b1 ea31fd22fd98c917081a603393b0f49b210f3154`；不要创建新 PR 或改动 main |
+| **Codex** | ⚪ 本地开发已结束，未交付原补丁 | 两次自报本地 commit，但没有远端 push 或完整 patch；未把 Codex 摘要冒充代码交付 |
+| **GPT 代码恢复** | 🟢 **已真实提交到开发分支** | GPT 直接从可核验的远端基线重做 P0/P1，提交到原 [Draft PR #4](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4)；不是 Codex 本地 commit |
+| **GPT 独立复核** | 🟠 **源码检查通过，运行验收未完成** | 已检查远端源码 **20/20** 项静态约束；隔离环境 Node 22 的账号能力模块合成测试 **3/3** 通过；不能代替全仓库测试 |
+| **GitHub 代码** | 🟢 可检查的真实 diff | PR #4 head `3564726c01c2d211b81c4693d81df088dbde21ca`，共 **13 个变更文件、7 次提交**，base 仍是 main 原始提交；PR 保持 Draft，未合并 |
+| **自动续办任务** | ⏸️ 已暂停 | 任务 `6af53fa4f9f0819190739da4d4387b76` 实际 `is_enabled=false`，不会每小时自动检查；不碰旧实验 |
+| **CEO 介入** | **目前不需要** | 代码交付卡点已由 GPT 自行处理；只有完整运行环境或产品边界出现无法自行解决的问题时，才明确提出具体决策 |
 
-**已完成：** 真实 Codex 本地代码修改任务及两次回执；Codex 自报 5 个合成回归测试通过、前端构建通过。
+**本次真正改动：** 去除运行补丁中的硬编码人设数据库 ID，使用账号与项目人设绑定的显式内容能力；保护包装只走已登记原图的混合合成；文案和配图分开记录成功/失败；图库不足不偷换为 AI 生图；图片数量支持 1–4 张；修改图片会取消此前审核状态；自动发布必须经过人工审核且已有图片。
 
-**尚未完成：** GitHub 业务代码交付、GPT 源码验收、独立验证测试、后端完整编译与运行验证、受控修复闭环。Codex 自报 `npm test` 21/22，Prisma 生成 HTTP 403，后端 TypeScript 编译未通过，均不得写成已通过。
+**尚未通过的验收：** 需要在独立、可运行的 Node 24/Prisma 环境执行完整 `npm test`、前端构建、后端类型检查、实际 NestJS 运行链及合成数据端到端测试。原包装像素保护的代码仍在，但未执行真实图片合成测试。**不能标记“P0/P1 最终验收通过”，不能启动依赖其通过的 P2。**
 
-**当前修复目标：** P0 配图错误可见及正确来源、P1 账号能力稳定路由；保持原包装保护、1–4 张图、人工审核和多账号隔离，不再叠加不必要的 runtime 覆写。
+**架构待确认事项：** 账号能力目前兼容存放在原有 `activeWindow` JSON 中，避免未经审核的数据库迁移，但类型安全较弱，且尚未配置任何真实账号。正式启用前需要独立确认配置方案，不能静默写生产数据。
 
-**阻塞解除条件：** PR #4 出现完整且符合范围的真实业务代码 diff，或拿到完整可校验补丁。届时 GPT 才能进入独立验收；不需要重新批准 GitHub 调用。看板状态字段将明确区分：`Codex 运行中`、`等待交付`、`GPT 验收中`、`暂停`、`需 CEO 介入`。
+**证据入口：** [PR #4 代码 diff](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4/files) · [实际提交 `3564726`](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/commit/3564726c01c2d211b81c4693d81df088dbde21ca) · [独立复核记录](AUTO_DEV_004_REVIEW.md) · [运行状态 JSON](AUTO_DEV_004_STATE.json)。
 
-[本轮自动化状态文件](AUTO_DEV_004_STATE.json) · [首次派单](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4#issuecomment-6814480636) · [补丁请求](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4#issuecomment-6814800851) · [第二次 Codex 回执](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4#issuecomment-6814912525)
+**后续状态规则：** 只有有执行回执时才写“Codex 正在运行”；已提交 GitHub 但尚未跑完整测试写“代码已交付，待运行验收”；自动任务关闭写“已暂停”；确实需要 CEO 做选择才写“需要介入”，并附唯一具体事项。
 
 ---
 
