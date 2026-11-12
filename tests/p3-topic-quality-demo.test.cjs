@@ -54,6 +54,14 @@ test('P3 demonstration: execute nine synthetic persona/category clues through co
     assert.ok(f.rows.every(t=>Array.from(t.title).length<=20),'title exceeded 20 characters');
     assert.ok(f.rows.every(t=>!t.title.includes('怎么判断怎么')&&!t.title.includes('迪拜迪拜')));
     assert.ok(f.rows.every(t=>!t.title.endsWith('怎怎么判断？')));
+    if(scenario.id==='O01') {
+      assert.ok(f.rows[0].title.includes('低粉尘是否等于零粉尘？'),
+        'A negated/critical zero-dust comparison question must remain intelligible');
+    }
+    if(scenario.id==='D01'||scenario.id==='D02') {
+      assert.ok(!f.rows[0].title.includes('渠道｜') || !f.rows[0].title.includes('渠道｜门店渠道'),
+        'Do not repeat the channel label in the title prefix');
+    }
     assert.equal(f.modelCalls(),0);
     console.log('P3_DEMO_CASE '+JSON.stringify({
       id:scenario.id,role:scenario.role,product:scenario.product,
