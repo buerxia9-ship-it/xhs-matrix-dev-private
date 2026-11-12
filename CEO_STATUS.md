@@ -2,46 +2,35 @@
 
 ## AUTO-DEV-004｜可核验进度监控
 
-> **当前运行态：⏸️ IDLE / 没有正在执行的 GitHub CI Job。**
+> **当前执行：🟢 RUNNING · GitHub Actions 正在重测。**
 >
-> **最近一次测试：✅ 3/3 作业成功，27/27 离线测试通过；最后的独立端到端验收仍待核实。**
+> **本次 GPT 已实际提交修复 `44a12b6`**：堵住“未审核草稿可直接标记已发布”的路径；补充人工发布记录与失败日志测试。Codex 没有新运行回执。
 >
-> **GPT/Codex：没有可验证的当前运行心跳。定时监控已启用≠GPT 正在工作。CEO 暂无需操作。**
+> **CEO 暂无需介入。只对独立 Draft PR #4 进行离线测试，不修改 main、不部署、不真实发帖。**
 
-### 证据进度条
+### 已验证进度与本轮执行
 
-**█████████░ 90%｜9/10 个关卡已核验完成**
+**█████████░ 90%｜前一版已经通过 9/10 验收关卡；最新修复分支正在重新测试，不能自动算作已验收。**
 
-这是 **P0/P1 当前技术验收关卡** 的完成度，不是整个小红书自动化产品的完成率，也不是工作耗时。第 10 关缺少独立端到端验收结论时，不能自动跳到 100%。
-
-| 执行环节 | 是否正在工作 | 最后证据 / 下一步 |
+| 环节 | 真实状态 | 证据 |
 | --- | --- | --- |
-| GitHub Actions | **当前未运行** | [第二轮 CI #43171080140](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43171080140) 已完成且 success，3/3 job 通过；当前无执行中 Job |
-| GPT 产品负责人 | **无实时心跳证据** | 已核对 CI 结束，并更新 JSON / 看板；下一步检查 1–4 张受保护原图及人工审核端到端证明 |
-| Codex 开发 Agent | **未确认执行中** | 最近是旧的开发回执；没有新任务运行证明 |
-| 自动验收巡检 | **已启用，但不等于正在执行** | Task ID `6af561185e7c819185ab3dc381abb29e`，计划约每小时检查，启动时才产生新执行证据 |
-| CEO | **当前无需介入** | 无待审批产品决策；若系统继续空闲，页面应明确写“未在工作”，不能写“推进中” |
+| GPT 当前动作 | 本次会话执行了真实代码修复与 CI 启动 | [修复提交](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/commit/44a12b67f43cd9cd8e88bfd9e59429e3f257b07c)；状态心跳保存在 [JSON](AUTO_DEV_004_STATE.json)，过期即视为不在执行 |
+| GitHub Actions | **in_progress** | [最新 CI #43177684828](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43177684828)，head `44a12b67f4`；Offline synthetic tests=completed，Locked frontend build=completed，Locked Prisma and NestJS build=in_progress |
+| Codex | 无新运行证据 | 旧回执不能证明目前在执行 |
+| 定时巡检 | **已暂停** | 最新核验 `is_enabled=false`；不能把暂停误写为正在巡检 |
+| CEO | **暂不需要操作** | 等待真实 CI 结果与 GPT 验收结论 |
 
-### 10 个真实验收关卡
+### 10 个技术验收关卡
 
-| 关卡 | 结果 | 证明 |
-| --- | --- | --- |
-| 1. 安全边界 | ✅ 通过 | 原开发分支，main / 正式数据未动 |
-| 2. P0/P1 代码交付 | ✅ 通过 | [PR #4 真实代码](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4/files) |
-| 3. 独立源码复核 | ✅ 通过 | [审计记录](AUTO_DEV_004_REVIEW.md) |
-| 4. 定向离线回归 | ✅ 通过 | 5/5 + 5/5 |
-| 5. 完整 npm test | ✅ 通过 | [第二轮测试日志](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43171080140) 27/27，退出 0 |
-| 6. 锁定依赖安装 | ✅ 通过 | 第二轮三项 CI 中的依赖安装成功 |
-| 7. Prisma generate | ✅ 通过 | 后端构建 Job 成功 |
-| 8. TypeScript / NestJS 构建 | ✅ 通过 | 后端构建 Job 成功 |
-| 9. Vue 前端构建 | ✅ 通过 | 前端 Job 成功 |
-| 10. 原图完整合成、SHA/像素以及人工审核端到端 | ◻️ **待独立验收** | 新的离线测试可作为部分证据，但尚无全面通过结论 |
+**原基线 9/10 已过**：安全边界、P0/P1 代码交付、独立源码复核、定向离线回归、27/27 全量测试、锁定依赖、Prisma、NestJS/TypeScript、Vue 构建。
 
-**下一动作：** GPT 或已调度自动验收任务需独立核验第 10 关及实际源码路径；若缺少可执行用例，必须明确写“未开始/阻断”，不能留在“运行中”。没有完整证据不得合并、发布、部署或进入依赖本阶段的 P2。
+**第 10 关已做合成测试**：真实 Sharp 生成 1–4 张，包装 SHA/不透明像素与缺失篡改阻断；编译后 PublishService 与 autopilot 的人工审核闸门。此次发现 `markPublished` 缺少同样的人工审核校验，已进行有界修复，新增该入口的离线回归。
 
-**最近核对：** 2026-11-12 06:56 UTC（北京时间 14:56）。本看板是定时核验后的 GitHub 快照；本地 HTML 可在浏览器中每 45 秒读取 GitHub Actions 当前状态，但不会读取 GPT/Codex 内部未上报的运行过程。
+**下一步**：读取新 CI 三个作业的真实退出码和测试摘要；绿灯后再完成这轮 P0/P1 最终受控验收。P2 选题优化需使用独立开发分支，不能当作 main 已合并。
 
-[唯一状态 JSON](AUTO_DEV_004_STATE.json) · [CI 第二轮](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43171080140) · [PR #4](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4) · [历史测试记录](AUTO_DEV_004_DESKTOP_TESTS_20261112.json)
+**最近核对**：2026-11-12T07:46:54.316Z UTC（GitHub 快照，不是 GPT/Codex 内部实时遥测）。
+
+[状态 JSON](AUTO_DEV_004_STATE.json) · [PR #4](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4) · [最新 CI](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43177684828)
 
 ---
 
