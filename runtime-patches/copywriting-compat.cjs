@@ -2,6 +2,7 @@ const path=require('path'),fs=require('fs'),crypto=require('crypto');
 const {build,payload}=require('./copywriting/context.cjs');
 const {draftSchema,reviewSchema,inspect,length}=require('./copywriting/policy.cjs');
 const {terraChatParams}=require('./terra-chat-compat.cjs');
+const {resolveContentProfile}=require('./content-capability.cjs');
 const locks=new Set(),root=process.env.YUBAO_COPY_ARTIFACT_ROOT||path.join(__dirname,'copywriting'),auditDir=path.join(root,'audits');
 module.exports=function(backend){
  const {GenerateService}=require(path.join(backend,'dist/modules/generate/generate.service'));
@@ -50,7 +51,7 @@ module.exports=function(backend){
  const previous=GenerateService.prototype.generateFromTopic;
  GenerateService.prototype.generateFromTopic=async function(topicId,opts={}){
   const topic=await this.prisma.topic.findUnique({where:{id:topicId}});if(!topic)throw new BadRequestException('选题不存在');const campaign=await this.campaigns.findOne(topic.campaignId);
-  if(campaign.personaId!=='cmw1s72vh000yqcncwkg0hgx1')return previous.call(this,topicId,opts);
+  const profile=await resolveContentProfile(this,campaign);if(profile.kind==='blocked')throw new BadRequestException(profile.reason);if(profile.kind!=='protected')return previous.call(this,topicId,opts);
   if(locks.has(topicId))throw new BadRequestException('该选题正在写作与复核，请勿重复点击。');locks.add(topicId);
   try{const {candidate,audit}=await this.composeVerifiedCopy(topicId,opts);
    const draft=await this.prisma.draft.create({data:{campaignId:campaign.id,topicId,personaId:campaign.personaId,title:candidate.titles[0],body:candidate.paragraphs.join('\n\n'),hashtags:JSON.stringify(candidate.hashtags),images:'[]',status:'ready',complianceChecked:false,playbook:opts.theme||'干货'}});

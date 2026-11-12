@@ -1,4 +1,5 @@
 const path=require('path'),fs=require('fs');
+const {resolveContentProfile}=require('./content-capability.cjs');
 module.exports=function(backend){
  const {GenerateService}=require(path.join(backend,'dist/modules/generate/generate.service'));
  const {WikiService}=require(path.join(backend,'dist/modules/wiki/wiki.service'));
@@ -9,7 +10,7 @@ module.exports=function(backend){
  const previous=GenerateService.prototype.buildVerifiedContext;
  GenerateService.prototype.buildVerifiedContext=async function(topicId){
   const topic=await this.prisma.topic.findUnique({where:{id:topicId}});if(!topic)throw new BadRequestException('选题不存在');
-  const campaign=await this.campaigns.findOne(topic.campaignId);if(campaign.personaId!=='cmw1s72vh000yqcncwkg0hgx1')return previous.call(this,topicId);
+  const campaign=await this.campaigns.findOne(topic.campaignId);const profile=await resolveContentProfile(this,campaign);if(profile.kind==='blocked')throw new BadRequestException(profile.reason);if(profile.kind!=='protected')return previous.call(this,topicId);
   if(topic.status==='discarded')throw new BadRequestException('已弃用选题不能生成');
   const persona=await this.prisma.persona.findUnique({where:{id:campaign.personaId}});const spaces=JSON.parse(persona.wikiSpaceIds||'[]');
   const pages=await this.prisma.wikiPage.findMany({where:{spaceId:{in:spaces}},orderBy:{order:'asc'}});

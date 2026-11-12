@@ -2,15 +2,20 @@ const fs=require('fs'),path=require('path'),crypto=require('crypto');
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
 const xml=s=>String(s).replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'}[c]));
 const locks=new Set();
+const {resolveContentProfile}=require('./content-capability.cjs');
 module.exports=function(backend){
  const {GenerateService}=require(path.join(backend,'dist/modules/generate/generate.service'));
  const {BadRequestException}=require(require.resolve('@nestjs/common',{paths:[backend]}));
  const sharp=require(require.resolve('sharp',{paths:[backend]}));const previous=GenerateService.prototype.generateImageForDraft;
  GenerateService.prototype.generateImageForDraft=async function(id,prompt,ratio='3:4',count=1,source='mix'){
   if(source!=='mix')return previous.call(this,id,prompt,ratio,count,source);
+  const draft=await this.prisma.draft.findUnique({where:{id}});if(!draft)throw new BadRequestException('草稿不存在');
+  const campaign=await this.campaigns.findOne(draft.campaignId);const profile=await resolveContentProfile(this,campaign);
+  if(profile.kind==='blocked')throw new BadRequestException(profile.reason);
+  if(profile.kind!=='protected')return previous.call(this,id,prompt,ratio,count,source);
   if(locks.has(id))throw new BadRequestException('此草稿正在配图，请等本次完成，不要重复点击。');
   locks.add(id);try{
-   const d=await this.prisma.draft.findUnique({where:{id}});if(!d)throw new BadRequestException('草稿不存在');
+   const d=draft;
    const dims={'3:4':[1080,1440],'4:5':[1080,1350],'1:1':[1080,1080],'9:16':[1080,1920],'4:3':[1440,1080]};if(!dims[ratio])throw new BadRequestException('不支持的图片比例');
    const n=Math.max(1,Math.min(4,Number(count)||1));const [w,h]=dims[ratio];
    const all=await this.materials.list(d.campaignId);const registry=JSON.parse(fs.readFileSync(path.join(__dirname,'composition/protected-assets.json'),'utf8'));
