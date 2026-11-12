@@ -27,14 +27,17 @@
           <el-table-column label="生成时间" width="150">
             <template #default="{ row }">{{ fmt(row.createdAt) }}</template>
           </el-table-column>
+          <el-table-column label="人工审核" width="100">
+            <template #default="{ row }"><el-tag size="small" :type="row.complianceChecked===true?'success':'warning'">{{ row.complianceChecked===true ? '已审核' : '待审核' }}</el-tag></template>
+          </el-table-column>
           <el-table-column label="配图" width="80">
             <template #default="{ row }">{{ (row.images||[]).length }} 张</template>
           </el-table-column>
           <el-table-column label="操作" width="320">
             <template #default="{ row }">
-              <el-button size="small" type="warning" plain :loading="pubId===row.id" :disabled="!accountId" @click="pubHold(row)">拟人填写·自己发</el-button>
-              <el-button size="small" text type="success" @click="markDone(row)">标记已发布</el-button>
-              <el-button size="small" text type="danger" :loading="autoPubId===row.id" :disabled="!accountId" @click="pub(row)">立即发布(全自动)</el-button>
+              <el-button size="small" type="warning" plain :loading="pubId===row.id" :disabled="!accountId || !isReviewed(row)" @click="pubHold(row)">拟人填写·自己发</el-button>
+              <el-button size="small" text type="success" :disabled="!isReviewed(row) || !hasManualJob(row)" @click="markDone(row)">标记已发布</el-button>
+              <el-button size="small" text type="danger" :loading="autoPubId===row.id" :disabled="!accountId || !isReviewed(row)" @click="pub(row)">立即发布(全自动)</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -92,6 +95,14 @@ const autoPubId = ref('')
 const publishers = computed(() => accounts.value.filter((a) => a.role === 'publisher'))
 const readyDrafts = computed(() => drafts.value.filter((d) => d.status === 'ready'))
 const publishedDrafts = computed(() => drafts.value.filter((d) => d.status === 'published'))
+function isReviewed(row) {
+  return row.status === 'ready' && row.complianceChecked === true &&
+    Array.isArray(row.images) && row.images.length >= 1 && row.images.length <= 4
+}
+function hasManualJob(row) {
+  return !!accountId.value && jobs.value.some(j =>
+    j.draftId === row.id && j.accountId === accountId.value && j.status === 'awaiting_manual')
+}
 
 function fmt(s) { return s ? new Date(s).toLocaleString('zh-CN') : '' }
 

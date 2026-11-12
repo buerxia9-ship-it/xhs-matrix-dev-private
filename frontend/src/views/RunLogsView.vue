@@ -12,7 +12,7 @@
     </el-card>
 
     <el-alert type="info" :closable="false" show-icon style="margin:12px 0"
-      title="这里随时查看每个项目的运行流水（采集/分析/生成/发布/完成）。立即跑或定时跑的过程都会记录在这。" />
+      title="这里随时查看每个项目的运行流水（采集/分析/文案/配图/发布/完成）。立即跑或定时跑的过程都会记录在这。" />
 
     <el-empty v-if="!store.currentId" description="请先选择项目" />
     <template v-else>
@@ -46,7 +46,7 @@ let timer = null
 
 function fmt(s) { return s ? new Date(s).toLocaleString('zh-CN') : '' }
 function stageText(s) {
-  return { collect: '采集', synthesize: '知识沉淀', analysis: '分析', generate: '生成', publish: '发布', done: '完成', error: '错误' }[s] || s
+  return { collect: '采集', synthesize: '知识沉淀', analysis: '分析', generate: '文案', image: '配图', publish: '发布', done: '完成', error: '错误' }[s] || s
 }
 
 async function load() {
