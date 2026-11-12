@@ -22,8 +22,13 @@ export class AnalysisService {
       .replace(/\d{5,}/g, "")
       .replace(/\s+/g, " ")
       .trim();
-    for (const phrase of ["亲测", "真实测评", "姐妹们", "零粉尘", "绝对", "TOP1", "首选", "必备"]) {
+    for (const phrase of ["亲测", "真实测评", "姐妹们", "绝对", "TOP1", "首选", "必备"]) {
       text = text.split(phrase).join("");
+    }
+    // "零粉尘" may occur in a question about an unverified absolute claim.
+    // Preserve the question; strip the absolute wording from any affirmative clue.
+    if (text.includes("零粉尘") && !/(是否|等于|真的|靠谱吗|区别|是不是真的|吗|能否)/.test(text)) {
+      text = text.replace(/零粉尘/g, "粉尘");
     }
     if (product) text = text.split(product).join("");
     return Array.from(text).slice(0, 18).join("").trim();
@@ -53,7 +58,8 @@ export class AnalysisService {
       /饮水机/.test(product) ? "饮水机" : /狗粮/.test(product) ? "狗粮" :
       (product.replace(/[A-Za-z0-9_\-\s]/g, "").trim() || product).slice(0, 6);
     const leading = region && !category.includes(region) ? region : "";
-    const editorial = lens === "channel" ? "渠道" : lens === "brand" ? "知识" : "";
+    const editorial = lens === "channel" && !/渠道|经销|合作|供货|代理/.test(concern) ? "渠道" :
+      lens === "brand" ? "知识" : "";
     const prefix = leading + category + editorial + "｜";
     let focus = String(concern || "").trim();
     if (region && focus.startsWith(region)) focus = focus.slice(region.length).trim();
