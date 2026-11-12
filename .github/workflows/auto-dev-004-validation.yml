@@ -57,7 +57,7 @@ jobs:
   backend-build:
     name: Locked Prisma and NestJS build
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     env:
       DATABASE_URL: file:./ci-synthetic.db
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
@@ -79,4 +79,9 @@ jobs:
         run: npm --prefix backend-ts run build
       - name: Real Sharp synthetic packaging and review-gate integration
         run: node --test tests/content-image-integration.test.cjs
+        timeout-minutes: 3
+      - name: Build frontend for synthetic browser smoke
+        run: npm ci --prefix frontend --no-audit --no-fund && npm --prefix frontend run build
+      - name: Browser UI review/log smoke with localhost-only fixtures
+        run: node --test tests/content-ui-smoke.test.cjs
         timeout-minutes: 3
