@@ -210,24 +210,28 @@ ${kbRule}
     if (!draft) throw new BadRequestException("草稿不存在");
     const campaign = draft.campaignId ? await this.campaigns.findOne(draft.campaignId) : null;
     const ratio = aspectRatio || "3:4";
-    const n = Math.min(Math.max(count, 1), 4);
+    const n = Math.min(4, Math.max(1, Math.trunc(Number(count) || 1)));
+    if (source !== "ai" && source !== "library" && source !== "mix") throw new BadRequestException("不支持的配图来源");
 
     // 生图提示词三选一（优先级从高到低）：
     //  1) 手填 extraPrompt（这一条单独指定）
     //  2) AI 智能扩写：先把文章转成"具体画面描述"再生图（默认开，图文最贴）
     //  3) 模板填空：模板里嵌入标题 + 正文首句（关掉 AI 扩写时用）
-    const aiExpand = !(campaign?.cadence && campaign.cadence.imageAiExpand === false);
-    let basePrompt: string;
-    if (extraPrompt?.trim()) {
-      basePrompt = extraPrompt.trim();
-    } else if (aiExpand) {
-      basePrompt = await this.buildScenePrompt(draft, campaign);
-    } else {
-      const tpl =
-        (campaign?.cadence && campaign.cadence.imagePrompt) ||
-        "小红书风格配图，主题：{标题}。{正文}。干净清新、真实质感、暖色调、无文字水印。";
-      const firstLine = (draft.body || "").split("\n").find((l) => l.trim()) || "";
-      basePrompt = tpl.replace(/\{标题\}/g, draft.title).replace(/\{正文\}/g, firstLine.slice(0, 60));
+    // 纯图库模式不应调用文本模型扩写，也不允许在素材不足时偷换为 AI 生图。
+    let basePrompt = "";
+    if (source !== "library") {
+      const aiExpand = !(campaign?.cadence && campaign.cadence.imageAiExpand === false);
+      if (extraPrompt?.trim()) {
+        basePrompt = extraPrompt.trim();
+      } else if (aiExpand) {
+        basePrompt = await this.buildScenePrompt(draft, campaign);
+      } else {
+        const tpl =
+          (campaign?.cadence && campaign.cadence.imagePrompt) ||
+          "小红书风格配图，主题：{标题}。{正文}。干净清新、真实质感、暖色调、无文字水印。";
+        const firstLine = (draft.body || "").split("\n").find((l) => l.trim()) || "";
+        basePrompt = tpl.replace(/\{标题\}/g, draft.title).replace(/\{正文\}/g, firstLine.slice(0, 60));
+      }
     }
 
     // 决定图库取几张、AI 生几张
@@ -247,25 +251,22 @@ ${kbRule}
       const libImgs = await this.materials.pickForDraft(draft.campaignId, ratio, libCount, materialDir, matchText);
       newImages.push(...libImgs);
     }
-    // AI 生成补足剩余
-    const aiCount = n - newImages.length;
+    // 图库不回退 AI；任何生图失败都会阻断，不将不足数量的结果当成完成。
+    const aiCount = source === "library" ? 0 : n - newImages.length;
     const aiImgs: string[] = [];
     for (let i = 0; i < aiCount; i++) {
       const p = aiCount > 1 ? `${basePrompt}（第${i + 1}张，换个角度/构图）` : basePrompt;
-      try {
-        const { images } = await this.gateway.generateImage(p, { aspectRatio: ratio });
-        aiImgs.push(...images);
-      } catch (e) {
-        if (source === "ai" && newImages.length === 0 && aiImgs.length === 0) throw e;
-      }
+      const { images } = await this.gateway.generateImage(p, { aspectRatio: ratio });
+      if (!Array.isArray(images) || !images.length) throw new BadRequestException("生图服务未返回图片，草稿配图未完成");
+      aiImgs.push(images[0]);
     }
     newImages.push(...aiImgs);
     // AI 图另存到局域网素材文件夹（可复用，下次可当素材）
     if (aiImgs.length && campaign?.cadence?.saveAiToFolder) this.materials.saveToFolder(aiImgs, materialDir);
-    if (!newImages.length) throw new BadRequestException("没有可用配图（素材为空且AI生成失败）");
+    if (newImages.length !== n) throw new BadRequestException(`本次需要 ${n} 张图，仅获得 ${newImages.length} 张；请补充素材或重试，未保存为完整配图。`);
 
     const merged = [...(this.safe(draft.images, []) as string[]), ...newImages];
-    const row = await this.prisma.draft.update({ where: { id: draftId }, data: { images: JSON.stringify(merged) } });
+    const row = await this.prisma.draft.update({ where: { id: draftId }, data: { images: JSON.stringify(merged), complianceChecked: false } });
     return this.deserialize(row);
   }
 
@@ -283,7 +284,7 @@ ${kbRule}
     const urls = await this.materials.cropPicks(picks, ratio, materialDir);
     if (!urls.length) throw new BadRequestException("没有可用的选中图片");
     const merged = [...(this.safe(draft.images, []) as string[]), ...urls];
-    const row = await this.prisma.draft.update({ where: { id: draftId }, data: { images: JSON.stringify(merged) } });
+    const row = await this.prisma.draft.update({ where: { id: draftId }, data: { images: JSON.stringify(merged), complianceChecked: false } });
     return this.deserialize(row);
   }
 
