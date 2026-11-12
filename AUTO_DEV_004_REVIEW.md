@@ -1,3 +1,20 @@
+# AUTO-DEV-004 | 最终受控离线验收结论
+
+**结论：PASS（仅 P0/P1 隔离开发分支的离线/合成验收），不等于产品上线验收。**
+
+- 当前验收开发 HEAD：`91299ccfc28ff69fc2460e2f9ae9b6e59791dd78`
+- PR [#4](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/pull/4) 仍为 Draft，base=main，未合并。
+- [CI #43178252049](https://github.com/buerxia9-ship-it/xhs-matrix-dev-private/actions/runs/43178252049) 已结束 `completed/success`，3/3 Jobs 通过，目标 head 匹配。
+- `npm test` 离线基础测试 **27/27**；编译后 NestJS 服务 + 真 Sharp 合成/审核保护专项 **6/6**；真实构建的 Vue 页面通过 Chrome + 本地假 API 的 UI 冒烟测试 **1/1**。
+- 保护范围：1/2/3/4 张透明合成 PNG、登记原图 SHA / 不透明像素一致性、丢失/篡改/非透明素材前置阻断、动态 account/persona 权限、配图失败与文案成功分别记录、未审核或缺图草稿不能发布、`markPublished` 必须审核通过且存在同账号 `awaiting_manual` 作业、UI 上未审核/无待确认记录不能直接点击标记发布。
+- 修复记录：`44a12b67f43cd9cd8e88bfd9e59429e3f257b07c`（服务与前端的人工审核补丁）；`91299ccfc28ff69fc2460e2f9ae9b6e59791dd78`（独立 Chrome UI 冒烟回归），测试均运行在受控 GitHub Actions。
+- 所有图片、账号、数据库记录、发布器、HTTP API 输入均为合成，**没有**调用真实小红书、付费模型、客户信息、真实包装文件、部署或发布。
+- 未验收：真实账号浏览器流程、生产数据迁移、真实包装授权样品下的创意质量、跨设备 Windows 操作体验、运营转化表现。这些是后续上线/用户人工验收，不得外推到 P0/P1 离线验证。
+- 静态设计待偿还：`activeWindow` JSON 临时复用为账号内容能力配置；未来可转 typed config（需产品评审）。本轮未写真实账号能力数据。
+- 进一步开发 P2 必须使用另一个独立 stacked Draft PR（base 此 PR 的开发分支），不能把 P0/P1 当成已合并 main。禁止自动合并、部署或扩大业务权限。
+
+---
+
 # AUTO-DEV-004 | Independent review checkpoint
 
 **Review date:** 2026-11-12 UTC  
