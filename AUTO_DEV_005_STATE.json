@@ -69,5 +69,16 @@
   },
   "next_task": "核对 Codex 新回执是否带真实远端代码或完整可应用补丁；若无代码不能空等或宣称执行成功。超出允许派单次数不再 @codex，必要时 GPT 在当前 P2 分支独立实现。",
   "boundaries": "No main merges, deployments, real XHS, customer data, original packaging, keys, live scraping or paid business APIs; synthetic fixtures only; single stacked PR.",
-  "last_check_result": "PR #5 scope marker only, final bounded dispatch 3/3 posted. Automated P2 watch enabled; no proof of active Codex execution."
+  "last_check_result": "PR #5 scope marker only, final bounded dispatch 3/3 posted. Automated P2 watch enabled; no proof of active Codex execution.",
+  "worker_heartbeat": {
+    "gpt": {
+      "status": "running",
+      "started_at": "2026-11-12T08:02:53.681Z",
+      "updated_at": "2026-11-12T08:02:53.681Z",
+      "expires_at": "2026-11-12T08:17:53.681Z",
+      "current_step": "读取 PR #5 回执、远端 head/diff/CI 并核对可验源码",
+      "automation_id": "6af571ead0608191a5cacb0cdb802442",
+      "executor": "GPT product owner / automated reviewer; not Codex"
+    }
+  }
 }
