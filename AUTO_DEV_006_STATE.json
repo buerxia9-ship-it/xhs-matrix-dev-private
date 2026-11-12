@@ -25,9 +25,9 @@
   },
   "stage": "quality_review_prepared",
   "work_mode": "review_only_no_code_dispatch",
-  "current_activity": "P3 质量验收实验已准备，有限自动推进任务已启用；下次计划执行不代表此刻正在执行。",
+  "current_activity": "P3 验收用例已准备；有限自动任务曾启动但未产生 GitHub 源码/测试产物，随后自动暂停。不得宣称正在运行。",
   "is_work_actively_running": false,
-  "last_verified_at": "2026-11-12T08:26:41.177Z",
+  "last_verified_at": "2026-11-12T08:31:27.393Z",
   "owner_action_required": false,
   "owner_action": "none for technical preparation; later reviewer may rate representative topics",
   "acceptance_passed": false,
@@ -81,22 +81,29 @@
       "issue": "选题已支持编辑和采纳，但没有用户评分与采纳理由的独立质量回流字段"
     }
   ],
-  "next_task": "执行最小离线 P3 选题质量 smoke：以三种账号角色、两种宠物品类的合成线索测当前 P2 输出，提交可复核例子、源证据类型、问题分级和修复任务；不可冒充真实生成效果。",
+  "next_task": "本地/独立技术执行 P3 合成场景，用真实运行证据生成选题候选，再进入人设质量审核。当前自动化任务无法无介入保证执行，不能冒称后台推进。",
   "boundaries": "Only synthetic/user-approved non-sensitive evidence. No real XHS collection/DM, customer files, original packaging images, paid API, production DB, deployment or main merge; no new Codex dispatch under the exhausted 3/3 cap.",
   "automation_status": "not_scheduled",
   "history": [
     {
       "at": "2026-11-12T08:26:41.177Z",
       "event": "GPT independently inspected P2 remote AnalysisService + UI and prepared business acceptance stage"
+    },
+    {
+      "at": "2026-11-12T08:31:27.393Z",
+      "event": "Observed P3 scheduled run completed with requires_user_action=true and is_enabled=false; no test output or PR delivered."
     }
   ],
   "check_count": 0,
   "max_checks": 6,
   "automation": {
     "id": "Automation_fc651202956c81918b9565f09630f3cc",
-    "enabled": true,
+    "enabled": false,
     "schedule": "FREQ=HOURLY;COUNT=6",
     "next_scheduled_time": "2026-11-12T16:29:02+08:00",
-    "status": "scheduled_not_running"
+    "status": "paused_requires_user_action",
+    "last_run_at": "2026-11-12T08:29:23.674053Z",
+    "last_run_recorded_status": "completed",
+    "run_result_requires_user_action": true
   }
 }
