@@ -8,7 +8,7 @@ function workspace(t) {
   fs.mkdirSync(dataPath(), { recursive: true });
   const root = fs.mkdtempSync(dataPath(path.join(ROOT, '.cloud-data', 'setup-regression-')));
   for (const file of ['cloud/setup.sh', 'cloud/preflight.cjs', 'cloud/create-fixture.py',
-    'cloud/ensure-fixture.py', 'fixtures/effective-schema.sql']) {
+    'cloud/ensure-fixture.py', 'cloud/setup-windows.cjs', 'fixtures/effective-schema.sql']) {
     const destination = path.join(root, file);
     fs.mkdirSync(path.dirname(destination), { recursive: true });
     fs.copyFileSync(path.join(ROOT, file), destination);
@@ -51,7 +51,9 @@ test('missing fixture is created; approved fixture is reused without changing DB
 
 test('unknown database is refused before setup installs packages or creates caches', t => {
   const w = workspace(t); sql(w, 'CREATE TABLE unknown_test_only (id TEXT);');
-  const r = refusedUnchanged(w, () => cp.spawnSync('bash', [path.join(w.root, 'cloud/setup.sh')], { encoding: 'utf8' }));
+  const r = refusedUnchanged(w, () => process.platform === 'win32'
+    ? cp.spawnSync(process.execPath, [path.join(w.root, 'cloud/setup-windows.cjs')], { encoding: 'utf8' })
+    : cp.spawnSync('bash', [path.join(w.root, 'cloud/setup.sh')], { encoding: 'utf8' }));
   assert.match(r.stderr, /manifest is missing/);
   assert.equal(fs.existsSync(path.join(w.root, 'backend-ts/node_modules')), false);
   assert.equal(fs.existsSync(path.join(w.dir, 'cache')), false);
@@ -86,7 +88,19 @@ test('corrupt database, SQLite sidecar and symlink are refused without modificat
   assert.match(refusedUnchanged(w).stderr, /sidecars/);
   fs.unlinkSync(w.db + '-wal');
   const target = path.join(w.dir, 'retained.db');
-  fs.renameSync(w.db, target); fs.symlinkSync(target, w.db);
-  refusedUnchanged(w);
+  fs.renameSync(w.db, target);
+  if (process.platform === 'win32') {
+    // Native Windows file symlinks require a privilege we must not enable.
+    // Exercise a real directory reparse point instead, without elevation.
+    const folder = path.join(w.dir, 'junction-target'); fs.mkdirSync(folder);
+    fs.symlinkSync(folder, w.db, 'junction');
+    const retained = fs.readFileSync(target), names = fs.readdirSync(w.dir);
+    const refused = run(w); assert.equal(refused.status, 1);
+    assert.match(refused.stderr, /Synthetic fixture refused/);
+    assert.deepEqual(fs.readFileSync(target), retained);
+    assert.deepEqual(fs.readdirSync(w.dir), names);
+  } else {
+    fs.symlinkSync(target, w.db); refusedUnchanged(w);
+  }
   assert.equal(fs.lstatSync(w.db).isSymbolicLink(), true);
 });

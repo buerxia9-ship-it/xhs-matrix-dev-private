@@ -64,13 +64,13 @@ function fixtureServer(count) {
 }
 test('built Vue review controls and image error log are visible with only synthetic local fixtures',async t => {
   assert.ok(fs.existsSync(path.join(dist,'index.html')),'real Vue build required');
-  const chrome=['/usr/bin/google-chrome','/usr/bin/chromium','/usr/bin/chromium-browser'].find(x=>fs.existsSync(x));
+  const chrome=process.env.PREVIEW_CHROME_PATH || ['/usr/bin/google-chrome','/usr/bin/chromium','/usr/bin/chromium-browser'].find(x=>fs.existsSync(x));
   assert.ok(chrome,'CI runner must provide a Chrome browser; never silently skip UI test');
   const count={calls:0};
   const server=fixtureServer(count);
   await new Promise((resolve,reject)=>server.once('error',reject).listen(0,'127.0.0.1',resolve));
   t.after(()=>new Promise(resolve=>server.close(resolve)));
-  const browser=await chromium.launch({executablePath:chrome,headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
+  const browser=await chromium.launch({executablePath:chrome,headless:true,args:process.platform==='win32'?['--disable-background-networking']:['--no-sandbox','--disable-dev-shm-usage']});
   t.after(async()=>{await browser.close();});
   const page=await browser.newPage();
   const pageErrors=[];
@@ -103,13 +103,13 @@ test('built Vue review controls and image error log are visible with only synthe
 });
 
 test('built Vue source-led topic candidate is correctly labeled and editable with synthetic data',async t=>{
- const chrome=['/usr/bin/google-chrome','/usr/bin/chromium','/usr/bin/chromium-browser'].find(x=>fs.existsSync(x));
+ const chrome=process.env.PREVIEW_CHROME_PATH || ['/usr/bin/google-chrome','/usr/bin/chromium','/usr/bin/chromium-browser'].find(x=>fs.existsSync(x));
  assert.ok(chrome,'Chrome binary required, no silent UI skip');
  const count={calls:0,edits:0};
  const server=fixtureServer(count);
  await new Promise((resolve,reject)=>server.once('error',reject).listen(0,'127.0.0.1',resolve));
  t.after(()=>new Promise(resolve=>server.close(resolve)));
- const browser=await chromium.launch({executablePath:chrome,headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
+ const browser=await chromium.launch({executablePath:chrome,headless:true,args:process.platform==='win32'?['--disable-background-networking']:['--no-sandbox','--disable-dev-shm-usage']});
  t.after(async()=>browser.close());
  const page=await browser.newPage();
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
