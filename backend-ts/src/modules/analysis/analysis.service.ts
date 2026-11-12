@@ -48,7 +48,7 @@ export class AnalysisService {
     const keywords = Array.isArray(campaign.keywords)
       ? campaign.keywords.filter((x: unknown): x is string => typeof x === "string" && x.trim().length > 0)
       : [];
-    const terms = [...new Set([product, ...keywords].filter(x => x.length >= 2))];
+    const terms = [...new Set([product, ...keywords.filter(k => !["迪拜", "Dubai"].includes(k))].filter(x => x.length >= 2))];
     const region = keywords.includes("迪拜") ? "迪拜" : "";
     const rows = await this.prisma.note.findMany({
       where: { campaignId },

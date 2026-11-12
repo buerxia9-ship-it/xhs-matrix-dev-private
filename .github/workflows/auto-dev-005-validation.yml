@@ -1,0 +1,89 @@
+# Isolated AUTO-DEV-004 verification. Runs only on this development branch.
+# No production secrets, credentials, external business APIs, posting, deployment or main writes.
+name: AUTO-DEV-005 Evidence Topic Validation
+on:
+  push:
+    branches:
+      - dev/auto-dev-005-evidence-topics
+    paths:
+      - .github/workflows/auto-dev-005-validation.yml
+      - backend-ts/**
+      - frontend/**
+      - runtime-patches/**
+      - tests/**
+      - cloud/**
+      - package.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: auto-dev-005-validation
+  cancel-in-progress: true
+
+jobs:
+  offline-tests:
+    name: Offline synthetic tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.22.1'
+      - name: Verify runtime
+        run: node --version && npm --version
+      - name: Full repository offline tests
+        run: npm test
+
+  frontend-build:
+    name: Locked frontend build
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.22.1'
+      - name: Install locked frontend dependencies
+        run: npm ci --prefix frontend --no-audit --no-fund
+      - name: Build Vue frontend
+        run: npm --prefix frontend run build
+
+  backend-build:
+    name: Locked Prisma and NestJS build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DATABASE_URL: file:./ci-synthetic.db
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+      PATCHRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.22.1'
+      - name: Install locked backend dependencies
+        run: npm ci --prefix backend-ts --no-audit --no-fund
+      - name: Generate Prisma client (no DB connection)
+        run: npm --prefix backend-ts run prisma:generate
+      - name: Backend TypeScript typecheck
+        run: npm --prefix backend-ts run tsc
+      - name: Build NestJS backend
+        run: npm --prefix backend-ts run build
+      - name: P2 source-linked topic regression (synthetic only)
+        run: npm run test:p2
+      - name: Real Sharp synthetic packaging and review-gate integration
+        run: node --test tests/content-image-integration.test.cjs
+        timeout-minutes: 3
+      - name: Build frontend for synthetic browser smoke
+        run: npm ci --prefix frontend --no-audit --no-fund && npm --prefix frontend run build
+      - name: Browser UI review/log smoke with localhost-only fixtures
+        run: node --test tests/content-ui-smoke.test.cjs
+        timeout-minutes: 3
