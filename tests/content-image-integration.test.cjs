@@ -155,3 +155,67 @@ test('compiled autopilot does not dispatch unapproved or image-less drafts',asyn
   assert.equal(result,'无待发布草稿');
   assert.equal(calls,0);
 });
+test('mark-done cannot claim publication without approval, correct manual job and account',async()=>{
+  const {PublishService}=require(path.join(backend,'dist/modules/publish/publish.service'));
+  const draft={id:'synthetic-draft',campaignId:'synthetic-campaign',status:'ready',
+    complianceChecked:false,images:'["/generated/synthetic.png"]',accountId:null};
+  let writes=0,created=0,released=0;
+  const awaiting={id:'manual-job',draftId:draft.id,accountId:'synthetic-account',status:'awaiting_manual'};
+  const prisma={
+    draft:{
+      findUnique:async()=>draft,
+      update:async({data})=>{writes++;Object.assign(draft,data);return draft;}
+    },
+    publishJob:{
+      findFirst:async({where})=>where.status===awaiting.status&&where.accountId===awaiting.accountId?awaiting:null,
+      update:async({data})=>{writes++;Object.assign(awaiting,data);return awaiting;},
+      create:async()=>{created++;throw Error('must reuse existing job');},
+    },
+    $transaction:async ops=>Promise.all(ops),
+  };
+  const svc=new PublishService(prisma,{releaseHeld:async()=>{released++;},publishNote:async()=>{throw Error('real publishing prohibited')}});
+  await assert.rejects(svc.markPublished(draft.id,'synthetic-account'),/人工审核/);
+  draft.complianceChecked=true;draft.images='[]';
+  await assert.rejects(svc.markPublished(draft.id,'synthetic-account'),/人工审核/);
+  draft.images='["/generated/synthetic.png"]';
+  await assert.rejects(svc.markPublished(draft.id),/选择/);
+  await assert.rejects(svc.markPublished(draft.id,'different-account'),/待人工确认/);
+  assert.equal(writes,0);assert.equal(created,0);assert.equal(released,0);
+  const done=await svc.markPublished(draft.id,'synthetic-account');
+  assert.equal(done.ok,true);assert.equal(draft.status,'published');assert.equal(awaiting.status,'published');
+  assert.equal(writes,2);assert.equal(created,0);assert.equal(released,1);
+  await assert.rejects(svc.markPublished(draft.id,'synthetic-account'),/人工审核/);
+});
+
+test('compiled orchestrator records image errors separately from generated copy',async()=>{
+  const {OrchestratorService}=require(path.join(backend,'dist/modules/autopilot/orchestrator.service'));
+  const notes=[],topic={id:'synthetic-topic',status:'candidate'};
+  const campaign={id:'synthetic-campaign',runMode:'semi',personaId:null,
+    cadence:{imageSource:'mix',imageCount:2,collectCooldownHours:20,draftsPerTopic:1,contentMix:[{type:'干货',weight:100,embedRate:0}]}};
+  const prisma={
+    runLog:{create:async({data})=>{notes.push(data);return data;}},
+    collectTask:{findFirst:async()=>({createdAt:new Date(),status:'done'})},
+    note:{count:async()=>1},
+    campaign:{
+      findUnique:async()=>({cadence:'{}'}),
+      update:async()=>({})
+    },
+  };
+  const generate={
+    draftsByCampaign:async()=>[],
+    generateFromTopic:async()=>({id:'synthetic-draft',title:'迪拜猫砂模拟'}),
+    generateImageForDraft:async()=>{throw new Error('SYNTHETIC_IMAGE_ERROR');}
+  };
+  let publications=0;
+  const analysis={
+    runForCampaign:async()=>({insightCount:0,topicCount:1}),
+    topicsByCampaign:async()=>[topic],
+    updateTopicStatus:async()=>{topic.status='adopted';},
+  };
+  const svc=new OrchestratorService(prisma,{findOne:async()=>campaign},null,analysis,generate,{publishDraft:async()=>{publications++;}},{});
+  const output=await svc.runOnce(campaign.id);
+  assert.ok(notes.some(n=>n.stage==='image'&&n.status==='error'&&/SYNTHETIC_IMAGE_ERROR/.test(n.detail)));
+  assert.ok(output.summary.some(x=>/文案 1 篇；配图成功 0 篇、失败或阻断 1 篇/.test(x)));
+  assert.equal(publications,0);
+  assert.ok(notes.some(n=>n.stage==='done'&&n.status==='ok'));
+});
