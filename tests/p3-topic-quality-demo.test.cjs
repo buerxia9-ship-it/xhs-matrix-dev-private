@@ -15,6 +15,14 @@ function makeCase({id,role,product,clue,comment=null}) {
   const comments=comment?[{id:'syn-comment-'+id,noteId:notes[0].id,content:comment}]:[];
   const rows=[];let modelCalls=0;
   const prisma={
+    persona:{findUnique:async({where})=>{
+      assert.equal(where.id,campaign.personaId);
+      const positioning=role==='渝宝店主'?'迪拜宠物店老板真实配送':
+        role==='中东总代理'?'中东总代理与经销渠道供货':
+        role==='TUXTOOX品牌官号'?'品牌官方配方科普':
+        '普通养宠内容账号';
+      return {positioning};
+    }},
     note:{findMany:async({where})=>notes.filter(n=>n.campaignId===where.campaignId)},
     comment:{findMany:async({where})=>comments.filter(c=>where.noteId.in.includes(c.noteId))},
     topic:{findMany:async({where})=>rows.filter(r=>r.campaignId===where.campaignId),
@@ -44,6 +52,8 @@ test('P3 demonstration: execute nine synthetic persona/category clues through co
     assert.ok(f.rows.every(t=>t.campaignId===f.campaign.id&&t.status==='candidate'));
     assert.ok(f.rows.every(t=>t.rationale.includes('note_id=syn-note-'+scenario.id) && !t.rationale.includes('本店客户说')));
     assert.ok(f.rows.every(t=>Array.from(t.title).length<=20),'title exceeded 20 characters');
+    assert.ok(f.rows.every(t=>!t.title.includes('怎么判断怎么')&&!t.title.includes('迪拜迪拜')));
+    assert.ok(f.rows.every(t=>!t.title.endsWith('怎怎么判断？')));
     assert.equal(f.modelCalls(),0);
     console.log('P3_DEMO_CASE '+JSON.stringify({
       id:scenario.id,role:scenario.role,product:scenario.product,
@@ -53,7 +63,7 @@ test('P3 demonstration: execute nine synthetic persona/category clues through co
     }));
   }
 });
-test('P3 observed limitation: identical question produces identical title across three personas',async()=>{
+test('P3 bounded repair: explicit persona positioning yields different accountable topic labels',async()=>{
  const same='迪拜猫砂粉尘和碎粉有什么区别';
  const roles=['渝宝店主','中东总代理','TUXTOOX品牌官号'];
  const titles=[];
@@ -64,8 +74,8 @@ test('P3 observed limitation: identical question produces identical title across
    titles.push(f.rows[0].title);
  }
  console.log('P3_PERSONA_COMPARISON '+JSON.stringify({roles,titles,identical:new Set(titles).size===1,
-   verdict:'KNOWN_GAP_same_template_not_persona_adapted'}));
- assert.equal(new Set(titles).size,1,'When this starts differing, revisit P3 gap classification');
+   verdict:'PARTIALLY_IMPROVED_explicit_persona_lens_only_still_requires_editorial_review'}));
+ assert.equal(new Set(titles).size,3,'Role-aware prefixes should differ when persona positioning is explicitly bound');
 });
 test('P3 evidence boundaries: comments are distinguished from note titles',async()=>{
  const f=makeCase({id:'PROV',role:'渝宝店主',product:'猫砂',
