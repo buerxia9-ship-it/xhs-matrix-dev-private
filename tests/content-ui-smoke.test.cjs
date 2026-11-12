@@ -31,6 +31,16 @@ function fixtureServer(count) {
       if(url.pathname === '/api/v1/accounts') return json(res,200,[{
         id:'synthetic-account',nickname:'SYNTHETIC',role:'publisher',status:'active'
       }]);
+      if(url.pathname === '/api/v1/analysis/insights') return json(res,200,[]);
+      if(url.pathname === '/api/v1/analysis/topics') return json(res,200,[{
+        id:'evidence-topic',campaignId:'synthetic-campaign',status:'candidate',
+        title:'合成猫砂选题',angle:'合成数据角度',
+        rationale:'证据类型=采集笔记标题；evidence_key=note:synthetic-note；note_id=synthetic-note；confidence=title_clue_only'
+      }]);
+      if(url.pathname === '/api/v1/analysis/topics/evidence-topic/details' && req.method==='PATCH') {
+        count.edits=(count.edits||0)+1;
+        return json(res,200,{id:'evidence-topic',title:'合成选题已修改',angle:'合成修改角度',status:'candidate'});
+      }
       if(url.pathname === '/api/v1/generate/drafts') return json(res,200,syntheticDrafts);
       if(url.pathname === '/api/v1/publish/jobs') return json(res,200,syntheticJobs);
       if(url.pathname === '/api/v1/autopilot/logs') return json(res,200,[{
@@ -90,4 +100,34 @@ test('built Vue review controls and image error log are visible with only synthe
   assert.ok((await page.locator('body').innerText()).includes('配图'));
   assert.deepEqual(pageErrors,[]);
   await page.close();
+});
+
+test('built Vue source-led topic candidate is correctly labeled and editable with synthetic data',async t=>{
+ const chrome=['/usr/bin/google-chrome','/usr/bin/chromium','/usr/bin/chromium-browser'].find(x=>fs.existsSync(x));
+ assert.ok(chrome,'Chrome binary required, no silent UI skip');
+ const count={calls:0,edits:0};
+ const server=fixtureServer(count);
+ await new Promise((resolve,reject)=>server.once('error',reject).listen(0,'127.0.0.1',resolve));
+ t.after(()=>new Promise(resolve=>server.close(resolve)));
+ const browser=await chromium.launch({executablePath:chrome,headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
+ t.after(async()=>browser.close());
+ const page=await browser.newPage();
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.route('**/*',route=>{
+  const u=new URL(route.request().url());
+  if(u.hostname!=='127.0.0.1')return route.abort('blockedbyclient');
+  return route.continue();
+ });
+ const url='http://127.0.0.1:'+server.address().port;
+ await page.goto(url+'/#/analysis',{waitUntil:'networkidle'});
+ await page.getByText('合成猫砂选题').waitFor({state:'visible',timeout:10000});
+ await page.getByText('标题线索 · 待核实').waitFor({state:'visible'});
+ await page.getByRole('button',{name:'修改'}).click();
+ await page.getByRole('dialog',{name:'修改选题候选'}).getByRole('textbox').first().fill('合成新标题');
+ await page.getByRole('dialog',{name:'修改选题候选'}).getByRole('textbox').nth(1).fill('合成新角度');
+ await page.getByRole('button',{name:'保存修改'}).click();
+ await page.getByText('合成选题已修改').waitFor({state:'visible'});
+ assert.equal(count.edits,1);
+ assert.deepEqual(errors,[]);
+ await page.close();
 });

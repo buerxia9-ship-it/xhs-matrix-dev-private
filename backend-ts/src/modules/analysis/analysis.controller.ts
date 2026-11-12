@@ -26,6 +26,11 @@ export class AnalysisController {
     return this.service.topicsByCampaign(campaignId);
   }
 
+  @Patch("topics/:id/details")
+  updateTopicDetails(@Param("id") id: string, @Body() body: { title: string; angle: string }) {
+    return this.service.updateTopicDetails(id, body);
+  }
+
   @Patch("topics/:id")
   updateTopic(@Param("id") id: string, @Body() body: { status: "adopted" | "discarded" | "candidate" }) {
     return this.service.updateTopicStatus(id, body.status);
