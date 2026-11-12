@@ -22,6 +22,17 @@ export class PublishService {
     const draft = await this.prisma.draft.findUnique({ where: { id: draftId } });
     if (!draft) throw new BadRequestException("草稿不存在");
     const images = this.safe(draft.images, []);
+    // Enforce the same human-review gate at the publishing service boundary,
+    // not only in the autopilot caller. Direct publish API calls must not bypass it.
+    if (
+      draft.status !== "ready" ||
+      draft.complianceChecked !== true ||
+      !Array.isArray(images) ||
+      images.length < 1 ||
+      images.length > 4
+    ) {
+      throw new BadRequestException("草稿尚未通过人工审核，或配图数量不符合1–4张，禁止发布");
+    }
     const topics = this.safe(draft.hashtags, []);
     const hold = !!opts?.holdForManual;
 

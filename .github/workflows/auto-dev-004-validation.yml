@@ -77,3 +77,6 @@ jobs:
         run: npm --prefix backend-ts run tsc
       - name: Build NestJS backend
         run: npm --prefix backend-ts run build
+      - name: Real Sharp synthetic packaging and review-gate integration
+        run: node --test tests/content-image-integration.test.cjs
+        timeout-minutes: 3
